@@ -6,6 +6,7 @@
 # Version history:
 #
 # 16-Jun-2019  M. Peel       Started
+# 17-Jun-2019  M. Peel       Tidied up
 
 import healpy as hp
 import numpy as np
@@ -170,12 +171,21 @@ for i in range(0,len(alphas)):
 	mfi313_corrections[i] = calc_correction(mfi313, 13.0, alphas[i],calindex=calindex,usecorr=usecorr)
 
 print(alphas)
+print('From bandpasses:')
 print(mfi111_corrections)
 print(mfi113_corrections)
 print(mfi217_corrections)
 print(mfi219_corrections)
 print(mfi311_corrections)
 print(mfi313_corrections)
+print('From fastcc:')
+print(fastcc('111',alpha=alphas))
+print(fastcc('113',alpha=alphas))
+print(fastcc('217',alpha=alphas))
+print(fastcc('219',alpha=alphas))
+print(fastcc('311',alpha=alphas))
+print(fastcc('313',alpha=alphas))
+
 plt.plot(alphas,mfi111_corrections,label='111')
 plt.plot(alphas,mfi113_corrections,label='113')
 plt.plot(alphas,mfi217_corrections,label='217')
@@ -211,10 +221,10 @@ l.set_zorder(20)
 plt.savefig(outdir+'mfi_corrections_fit.pdf')
 plt.clf()
 plt.close()
-exit()
 
 # Below is for Planck LFI
 
+# 2013 release. THE RIMO IS WRONG - it has an incorrect frequency shift in the bandpass.
 planck_lfi_filename = '/Users/mpeel/Documents/maps/planck2013/LFI_RIMO_R1.12.fits'
 bp_planck_30 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=2)
 plot_bandpass(bp_planck_30,outdir+'planck_112_30.png')
@@ -223,7 +233,7 @@ plot_bandpass(bp_planck_44,outdir+'planck_112_44.png')
 bp_planck_70 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=4)
 plot_bandpass(bp_planck_70,outdir+'planck_112_70.png')
 
-
+# 2015 release. Mistake in previous version fixed. Extra frequency shift needs to be applied.
 planck_lfi_filename = '/Users/mpeel/Documents/maps/planck2015/LFI_RIMO_R2.50.fits'
 bp_planck_30 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=25)
 plot_bandpass(bp_planck_30,outdir+'planck_250_30.png')
@@ -232,7 +242,7 @@ plot_bandpass(bp_planck_44,outdir+'planck_250_44.png')
 bp_planck_70 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=27)
 plot_bandpass(bp_planck_70,outdir+'planck_250_70.png')
 
-
+# 2018 release - actually the same as the 2015 release.
 planck_lfi_filename = '/Users/mpeel/Documents/maps/planck2018/LFI_RIMO_R3.31.fits'
 bp_planck_30_28S = read_lfi_rimo_bandpass(planck_lfi_filename,ext=3)
 plot_bandpass(bp_planck_30_28S,outdir+'planck_30_28S.png')
@@ -309,8 +319,7 @@ bp_planck_70_ds2 = combine_bandpasses(bp_planck_70_19, bp_planck_70_22)
 bp_planck_70_ds3 = combine_bandpasses(bp_planck_70_20, bp_planck_70_21)
 
 bp_shift = [0.3, 0.1, -0.4, 1.1, 0.5]
-bp_planck_30[0][:] = bp_planck_30[0][:] * 1.01
-# bp_planck_30[0][:] = bp_planck_30[0][:] + bp_shift[0]
+bp_planck_30[0][:] = bp_planck_30[0][:] + bp_shift[0]
 bp_planck_44[0][:] = bp_planck_44[0][:] + bp_shift[1]
 bp_planck_70_ds1[0][:] = bp_planck_70_ds1[0][:] + bp_shift[2]
 bp_planck_70_ds2[0][:] = bp_planck_70_ds2[0][:] + bp_shift[3]

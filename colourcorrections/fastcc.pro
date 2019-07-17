@@ -4,7 +4,7 @@ FUNCTION fastcc, freq, alpha, detector=detector, pair=pair,debug=debug,latest=la
     ; Actual frequencies are 28.4, 44.1 or 70.4 for LFI; 22.80 33.00 40.60 60.80 93.50 for WMAP
     ; detector (optional) should be between '18' and '28' inclusive for LFI, as a string; they should of the style 'K11', 'K12', 'K1' for WMAP.
     ; set 'debug' to see debug messages
-    ; set 'stable' to use the published WMAP and Planck numbers.
+    ; set 'latest' to use the latest WMAP and Planck numbers, otherwise use the WMAP9 and Planck 2013 values.
     ; 
     ; Version history:
     ; Mike Peel   01-Feb-2013   v1.0 Initial version
@@ -87,12 +87,12 @@ IF (keyword_set(latest)) THEN BEGIN ; latest version
      'Q':  cc = [0.996854, 0.00496893, -0.00181359]
      'V':  cc = [0.980322, 0.0143631, -0.00223596]
      'W':  cc = [0.984848, 0.0112743, -0.00164595]
-     '111': cc = [0.99449998, -0.01905447, -0.00178736]
-     '113': cc = [1.00443278, 0.01410601, -0.00134799]
-     '217': cc = [1.00465527, 1.52481441e-02, -5.71578066e-04]
-     '219': cc = [1.00457766, 1.50093102e-02, -5.39746337e-04]
-     '311': cc = [0.99667799, -0.01397235, -0.00295867]
-     '313': cc = [1.0030349, 0.00901265, -0.00187074]
+     '111': cc = [1.02883377, -0.01086302, -0.00177326]
+     '113': cc = [0.96466946, 0.02003096, -0.00123048]
+     '217': cc = [9.66480950e-01, 1.77601313e-02, -5.21420802e-04]
+     '219': cc = [9.67139379e-01, 1.74066499e-02, -5.02629404e-04]
+     '311': cc = [1.01216735, -0.00166866, -0.00238943]
+     '313': cc = [0.97215999, 0.01730058, -0.00173144]
      ELSE: BEGIN
        print,'Invalid frequency specified for fastcc, returning zero.'
        return, 0d

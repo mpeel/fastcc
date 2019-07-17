@@ -6,7 +6,7 @@
  # Actual frequencies are 28.4, 44.1 or 70.4 for LFI; 22.80 33.00 40.60 60.80 93.50 for WMAP
  # detector (optional) should be between '18' and '28' inclusive for LFI, as a string; they should of the style 'K11', 'K12', 'K1' for WMAP.
 # set 'debug' to see debug messages
-# set 'stable' to use the published WMAP and Planck numbers.
+# set 'latest=True' to use the latest WMAP and Planck numbers (default), otherwise set to 'False' use the WMAP9 and Planck 2013 values.
 #
 # Version history:
 # Mike Peel   01-Feb-2013   v1.0 Initial version
@@ -20,7 +20,7 @@
 # Mike Peel   12-Mar-2015   v2.3 Update 70GHz values to fits to corrected colour corrections from Paddy Leahy
 # Mike Peel   23-Mar-2015   v2.4 Update WMAP colour corrections to corrected values from Paddy Leahy.
 # Mike Peel   22-Jan-2016   v2.5 Convert from IDL to Python
-# Mike Peel   17-Jul-2017   v2.6 Swap 'dev' for 'latest' parameter, add QUIJOTE MFI
+# Mike Peel   17-Jul-2017   v2.6 Swap 'dev' for 'latest' parameter, add QUIJOTE MFI for testing
 
 def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 	# Define dictionaries containing the coefficients for different detectors and frequencies
@@ -49,14 +49,14 @@ def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 		'28': [0.98516, 0.0134605, -0.00318]
 	}
 
-	# WMAP9 modified by Paddy Leahy, Planck 2015, MFI 2019
+	# WMAP9 modified by Paddy Leahy, Planck 2015, MFI 2019 pre-release
 	frequencies_v2 = {
-		'111': [0.99449998, -0.01905447, -0.00178736],
-		'113': [1.00443278, 0.01410601, -0.00134799],
-		'217': [1.00465527, 1.52481441e-02, -5.71578066e-04],
-		'219': [1.00457766, 1.50093102e-02, -5.39746337e-04],
-		'311': [0.99667799, -0.01397235, -0.00295867],
-		'313': [1.0030349, 0.00901265, -0.00187074],
+		'111': [1.02883377, -0.01086302, -0.00177326],
+		'113': [0.96466946, 0.02003096, -0.00123048],
+		'217': [9.66480950e-01, 1.77601313e-02, -5.21420802e-04],
+		'219': [9.67139379e-01, 1.74066499e-02, -5.02629404e-04],
+		'311': [1.01216735, -0.00166866, -0.00238943],
+		'313': [0.97215999, 0.01730058, -0.00173144],
 		'30': [1.00513, 0.00301399, -0.00300699],
 		'44': [0.994769, 0.00596703, -0.00173626],
 		'70': [0.989711, 0.0106943, -0.00328671],
