@@ -145,6 +145,8 @@ print,'MFI 217',fastcc('217',spectra,/latest)
 print,'MFI 219',fastcc('219',spectra,/latest)
 print,'MFI 311',fastcc('311',spectra,/latest)
 print,'MFI 313',fastcc('313',spectra,/latest)
+print,'MFI 417',fastcc('417',spectra,/latest)
+print,'MFI 419',fastcc('419',spectra,/latest)
 
 
 END

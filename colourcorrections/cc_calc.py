@@ -98,7 +98,63 @@ def read_quijote_mfi_bandpass(filename):
 				bp6.append(float(val[6]))
 				bp7.append(float(val[7]))
 				bp8.append(float(val[8]))
+	bp1 = bp1 / np.sum(bp1)
+	bp2 = bp2 / np.sum(bp2)
+	bp3 = bp3 / np.sum(bp3)
+	bp4 = bp4 / np.sum(bp4)
+	bp5 = bp5 / np.sum(bp5)
+	bp6 = bp6 / np.sum(bp6)
+	bp7 = bp7 / np.sum(bp7)
+	bp8 = bp8 / np.sum(bp8)
 	return np.asarray([freq, bp1, bp2, bp3, bp4, bp5, bp6, bp7, bp8])
+
+def read_cbass_bandpass(filename):
+	freq = []
+	bp1 = []
+	bp2 = []
+	bp3 = []
+	bp4 = []
+	bp5 = []
+	bp6 = []
+	bp = np.loadtxt(filename,skiprows=1,delimiter=',')#np.loadtxt(bpFileName)
+	for val in bp:
+		# val = line.strip().replace(',','').split()
+		print(val)
+		freq.append(float(val[0]))
+		bp1.append(float(val[1]))
+		bp2.append(float(val[2]))
+		bp3.append(float(val[3]))
+		bp4.append(float(val[4]))
+		bp5.append(float(val[5]))
+		bp6.append(float(val[6]))
+	bp1 = bp1 / np.sum(bp1)
+	bp2 = bp2 / np.sum(bp2)
+	bp3 = bp3 / np.sum(bp3)
+	bp4 = bp4 / np.sum(bp4)
+	bp5 = bp5 / np.sum(bp5)
+	bp6 = bp6 / np.sum(bp6)
+	return np.asarray(np.abs([freq, bp1, bp2, bp3, bp4, bp5, bp6]))
+
+# From Luke's code
+# def calc_Kcol(alpha_src,alpha_cal,g,nu0,nu):
+#     numer = np.trapz(g*np.power(nu/nu0,alpha_src),nu)
+#     denom = np.trapz(g*np.power(nu/nu0,alpha_cal),nu)
+#     return numer/denom
+
+# def calc_Kcol_inv(alpha_src,alpha_cal,g,nu0,nu):
+#     numer = np.trapz(g*np.power(nu/nu0,alpha_src),nu)
+#     denom = np.trapz(g*np.power(nu/nu0,alpha_cal),nu)
+#     return numer/denom
+
+# def calc_Kcol_correct(alpha_src,alpha_cal,g,nu0,nu):
+#     numer = np.trapz(g*np.power(nu/nu0,alpha_cal - 2),nu)
+#     denom = np.trapz(g*np.power(nu/nu0,alpha_src - 2),nu)
+#     return numer/denom
+
+# def calc_Kcol_correct2(alpha_src,alpha_cal,g,nu0,nu):
+#     numer = np.trapz(g,nu)
+#     denom = np.trapz(g*np.power(nu/nu0,alpha_src-alpha_cal),nu)
+#     return numer/denom
 
 
 outdir = 'plots/'
@@ -106,6 +162,88 @@ ensure_dir(outdir)
 
 alphas = [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
 alphas = np.asarray(alphas)
+
+# CBASS
+cbass_bp = read_cbass_bandpass('/Users/mpeel/Documents/maps/cbass2019/20130625_v02_Passband.csv')
+print(cbass_bp[0])
+plot_bandpass([cbass_bp[0],cbass_bp[1]],outdir+'cbass_I1.png')
+plot_bandpass([cbass_bp[0],cbass_bp[2]],outdir+'cbass_Q1.png')
+plot_bandpass([cbass_bp[0],cbass_bp[3]],outdir+'cbass_U1.png')
+plot_bandpass([cbass_bp[0],cbass_bp[4]],outdir+'cbass_Q2.png')
+plot_bandpass([cbass_bp[0],cbass_bp[5]],outdir+'cbass_U2.png')
+plot_bandpass([cbass_bp[0],cbass_bp[6]],outdir+'cbass_I2.png')
+
+cbassI1_corrections = np.ones(len(alphas))
+cbassU1_corrections = np.ones(len(alphas))
+cbassQ1_corrections = np.ones(len(alphas))
+cbassU2_corrections = np.ones(len(alphas))
+cbassQ2_corrections = np.ones(len(alphas))
+cbassI2_corrections = np.ones(len(alphas))
+
+# print(calc_Kcol(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
+# print(calc_Kcol_inv(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
+# print(calc_Kcol_correct(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
+# print(calc_Kcol_correct2(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
+# print(1.0/calc_Kcol_inv(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
+# print(1.0/calc_Kcol_correct(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
+# print(1.0/calc_Kcol_correct2(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
+# exit()
+
+calindex = -0.299
+usecorr = False
+for i in range(0,len(alphas)):
+	cbassI1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[1]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassQ1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[2]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassU1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[3]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassQ2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[4]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassU2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[5]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassI2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[6]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
+
+print(alphas)
+print('From bandpasses:')
+print(cbassI1_corrections)
+print(cbassQ1_corrections)
+print(cbassU1_corrections)
+print(cbassQ2_corrections)
+print(cbassU2_corrections)
+print(cbassI2_corrections)
+
+plt.plot(alphas,cbassI1_corrections,label='I1')
+plt.plot(alphas,cbassQ1_corrections,label='Q1')
+plt.plot(alphas,cbassU1_corrections,label='U1')
+plt.plot(alphas,cbassQ2_corrections,label='Q2')
+plt.plot(alphas,cbassU2_corrections,label='U2')
+plt.plot(alphas,cbassI2_corrections,label='I2')
+l = plt.legend(prop={'size':11})
+l.set_zorder(20)
+plt.savefig(outdir+'cbass_corrections.pdf')
+plt.clf()
+plt.close()
+
+params = np.polyfit(alphas,cbassI1_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='I1_fit')
+params = np.polyfit(alphas,cbassQ1_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='Q1_fit')
+params = np.polyfit(alphas,cbassU1_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='U1_fit')
+params = np.polyfit(alphas,cbassQ2_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='Q2_fit')
+params = np.polyfit(alphas,cbassU2_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='U2_fit')
+params = np.polyfit(alphas,cbassI2_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='I2_fit')
+l = plt.legend(prop={'size':11})
+l.set_zorder(20)
+plt.savefig(outdir+'cbass_corrections_fit.pdf')
+plt.clf()
+plt.close()
+
 # QUIJOTE MFI
 pol1 = read_quijote_mfi_bandpass('/Users/mpeel/Documents/maps/quijote_mfi/Pol1_bandpass.dat')
 plot_bandpass([pol1[0], pol1[1]],outdir+'mfi_pol1_ch1.png')
@@ -134,6 +272,15 @@ plot_bandpass([pol3[0], pol3[5]],outdir+'mfi_pol3_ch5.png')
 plot_bandpass([pol3[0], pol3[6]],outdir+'mfi_pol3_ch6.png')
 plot_bandpass([pol3[0], pol3[7]],outdir+'mfi_pol3_ch7.png')
 plot_bandpass([pol3[0], pol3[8]],outdir+'mfi_pol3_ch8.png')
+pol4 = read_quijote_mfi_bandpass('/Users/mpeel/Documents/maps/quijote_mfi/Pol4_bandpass.dat')
+plot_bandpass([pol4[0], pol4[1]],outdir+'mfi_pol4_ch1.png')
+plot_bandpass([pol4[0], pol4[2]],outdir+'mfi_pol4_ch2.png')
+plot_bandpass([pol4[0], pol4[3]],outdir+'mfi_pol4_ch3.png')
+plot_bandpass([pol4[0], pol4[4]],outdir+'mfi_pol4_ch4.png')
+plot_bandpass([pol4[0], pol4[5]],outdir+'mfi_pol4_ch5.png')
+plot_bandpass([pol4[0], pol4[6]],outdir+'mfi_pol4_ch6.png')
+plot_bandpass([pol4[0], pol4[7]],outdir+'mfi_pol4_ch7.png')
+plot_bandpass([pol4[0], pol4[8]],outdir+'mfi_pol4_ch8.png')
 
 mfi111 = combine_bandpasses([pol1[0], pol1[2]], [pol1[0], pol1[4]],[pol1[0], pol1[6]],[pol1[0], pol1[8]])
 plot_bandpass(mfi111,outdir+'mfi_111.png')
@@ -147,11 +294,10 @@ mfi311 = combine_bandpasses([pol3[0], pol3[2]], [pol3[0], pol3[4]],[pol3[0], pol
 plot_bandpass(mfi311,outdir+'mfi_311.png')
 mfi313 = combine_bandpasses([pol3[0], pol3[1]], [pol3[0], pol3[3]],[pol3[0], pol3[5]],[pol3[0], pol3[7]])
 plot_bandpass(mfi313,outdir+'mfi_313.png')
-
-# For testing a top-hat bandpass
-# mfi219[1][:] = 1.0
-# mfi219[1][mfi111[0] <= 18.0] = 0
-# mfi219[1][mfi111[0] >= 20.0] = 0
+mfi417 = combine_bandpasses([pol4[0], pol4[2]], [pol4[0], pol4[4]],[pol4[0], pol4[6]],[pol4[0], pol4[8]])
+plot_bandpass(mfi417,outdir+'mfi_417.png')
+mfi419 = combine_bandpasses([pol4[0], pol4[1]], [pol4[0], pol4[3]],[pol4[0], pol4[5]],[pol4[0], pol4[7]])
+plot_bandpass(mfi419,outdir+'mfi_419.png')
 
 mfi111_corrections = np.ones(len(alphas))
 mfi113_corrections = np.ones(len(alphas))
@@ -159,16 +305,20 @@ mfi217_corrections = np.ones(len(alphas))
 mfi219_corrections = np.ones(len(alphas))
 mfi311_corrections = np.ones(len(alphas))
 mfi313_corrections = np.ones(len(alphas))
+mfi417_corrections = np.ones(len(alphas))
+mfi419_corrections = np.ones(len(alphas))
 
 calindex = 2.0#-0.3
 usecorr = False
 for i in range(0,len(alphas)):
-	mfi111_corrections[i] = calc_correction(mfi111, 11.0, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi113_corrections[i] = calc_correction(mfi113, 13.0, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi217_corrections[i] = calc_correction(mfi217, 17.0, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi219_corrections[i] = calc_correction(mfi219, 19.0, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi311_corrections[i] = calc_correction(mfi311, 11.0, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi313_corrections[i] = calc_correction(mfi313, 13.0, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi111_corrections[i] = calc_correction(mfi111, 11.2, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi113_corrections[i] = calc_correction(mfi113, 12.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi217_corrections[i] = calc_correction(mfi217, 16.7, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi219_corrections[i] = calc_correction(mfi219, 18.7, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi311_corrections[i] = calc_correction(mfi311, 11.1, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi313_corrections[i] = calc_correction(mfi313, 12.9, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi417_corrections[i] = calc_correction(mfi417, 17.0, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi419_corrections[i] = calc_correction(mfi419, 19.0, alphas[i],calindex=calindex,usecorr=usecorr)
 
 print(alphas)
 print('From bandpasses:')
@@ -178,6 +328,8 @@ print(mfi217_corrections)
 print(mfi219_corrections)
 print(mfi311_corrections)
 print(mfi313_corrections)
+print(mfi417_corrections)
+print(mfi419_corrections)
 print('From fastcc:')
 print(fastcc('111',alpha=alphas))
 print(fastcc('113',alpha=alphas))
@@ -192,8 +344,12 @@ plt.plot(alphas,mfi217_corrections,label='217')
 plt.plot(alphas,mfi219_corrections,label='219')
 plt.plot(alphas,mfi311_corrections,label='311')
 plt.plot(alphas,mfi313_corrections,label='313')
+plt.plot(alphas,mfi417_corrections,label='417')
+plt.plot(alphas,mfi419_corrections,label='419')
 l = plt.legend(prop={'size':11})
 l.set_zorder(20)
+plt.xlabel('Spectral index')
+plt.ylabel('Colour correction')
 plt.savefig(outdir+'mfi_corrections.pdf')
 plt.clf()
 plt.close()
@@ -216,11 +372,37 @@ plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='311_fi
 params = np.polyfit(alphas,mfi313_corrections,2)
 print(params)
 plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='313_fit')
+params = np.polyfit(alphas,mfi417_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='417_fit')
+params = np.polyfit(alphas,mfi419_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='419_fit')
 l = plt.legend(prop={'size':11})
 l.set_zorder(20)
+plt.xlabel('Spectral index')
+plt.ylabel('Colour correction')
 plt.savefig(outdir+'mfi_corrections_fit.pdf')
 plt.clf()
 plt.close()
+
+roke_11 = [0.9589, 0.01601, 0.002185]
+roke_13 = [1.022, -0.01436, 0.001688]
+roke_17 = [1.029, -0.01618,  0.0008349]
+roke_19 = [1.029, -0.01588, 0.0007932]
+plt.plot(alphas,1.0/(roke_11[0]+roke_11[1]*alphas+roke_11[2]*alphas**2),'-',label='11_roke')
+plt.plot(alphas,1.0/(roke_13[0]+roke_13[1]*alphas+roke_13[2]*alphas**2),'-',label='13_roke')
+plt.plot(alphas,1.0/(roke_17[0]+roke_17[1]*alphas+roke_17[2]*alphas**2),'-',label='17_roke')
+plt.plot(alphas,1.0/(roke_19[0]+roke_19[1]*alphas+roke_19[2]*alphas**2),'-',label='19_roke')
+l = plt.legend(prop={'size':11})
+l.set_zorder(20)
+plt.savefig(outdir+'mfi_corrections_roke.pdf')
+plt.clf()
+plt.close()
+
+print(mfi219_corrections[alphas == -0.5] - mfi419_corrections[alphas == -0.5])
+print(mfi217_corrections[alphas == -0.5] - mfi417_corrections[alphas == -0.5])
+exit()
 
 # Below is for Planck LFI
 

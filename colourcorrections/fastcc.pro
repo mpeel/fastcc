@@ -19,6 +19,7 @@ FUNCTION fastcc, freq, alpha, detector=detector, pair=pair,debug=debug,latest=la
     ; Mike Peel   12-Mar-2015   v2.3 Update 70GHz values to fits to corrected colour corrections from Paddy Leahy
     ; Mike Peel   23-Mar-2015   v2.4 Update WMAP colour corrections to corrected values from Paddy Leahy.
     ; Mike Peel   17-Jul-2019   v2.6 Change 'dev' to 'latest', add initial QUIJOTE MFI points
+    ; Mike Peel   17-Jul-2019   v2.6a Revised QUIJOTE MFI points
     
 wmap=0 ; Flag used later to determine which formula to use.
 
@@ -87,12 +88,14 @@ IF (keyword_set(latest)) THEN BEGIN ; latest version
      'Q':  cc = [0.996854, 0.00496893, -0.00181359]
      'V':  cc = [0.980322, 0.0143631, -0.00223596]
      'W':  cc = [0.984848, 0.0112743, -0.00164595]
-     '111': cc = [1.02883377, -0.01086302, -0.00177326]
-     '113': cc = [0.96466946, 0.02003096, -0.00123048]
-     '217': cc = [9.66480950e-01, 1.77601313e-02, -5.21420802e-04]
-     '219': cc = [9.67139379e-01, 1.74066499e-02, -5.02629404e-04]
-     '311': cc = [1.01216735, -0.00166866, -0.00238943]
-     '313': cc = [0.97215999, 0.01730058, -0.00173144]
+     '111': cc = [0.99278484, 0.00709364, -0.00182065]
+     '113': cc = [0.99583466, 0.00512841, -0.00151745]
+     '217': cc = [1.00166741, 4.87517031e-04, -6.63221982e-04]
+     '219': cc = [0.997955472, 1.66235456e-03, -4.36898290e-04]
+     '311': cc = [0.99421638, 0.00712698, -0.00234507]
+     '313': cc = [0.98683305, 0.01021644, -0.00182772]
+     '417': cc = [0.996066342, 3.10394890e-03, -5.71903939e-04]
+     '419': cc = [0.997016199, 2.40564506e-03, -4.58929918e-04]
      ELSE: BEGIN
        print,'Invalid frequency specified for fastcc, returning zero.'
        return, 0d

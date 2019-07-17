@@ -115,5 +115,7 @@ print('QUIJOTE 217', fastcc('217',spectra))
 print('QUIJOTE 219', fastcc('219',spectra))
 print('QUIJOTE 311', fastcc('311',spectra))
 print('QUIJOTE 313', fastcc('313',spectra))
+print('QUIJOTE 417', fastcc('417',spectra))
+print('QUIJOTE 419', fastcc('419',spectra))
 
 

@@ -21,6 +21,7 @@
 # Mike Peel   23-Mar-2015   v2.4 Update WMAP colour corrections to corrected values from Paddy Leahy.
 # Mike Peel   22-Jan-2016   v2.5 Convert from IDL to Python
 # Mike Peel   17-Jul-2017   v2.6 Swap 'dev' for 'latest' parameter, add QUIJOTE MFI for testing
+# Mike Peel   17-Jul-2017   v2.6a Revised QUIJOTE numbers
 
 def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 	# Define dictionaries containing the coefficients for different detectors and frequencies
@@ -51,12 +52,14 @@ def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 
 	# WMAP9 modified by Paddy Leahy, Planck 2015, MFI 2019 pre-release
 	frequencies_v2 = {
-		'111': [1.02883377, -0.01086302, -0.00177326],
-		'113': [0.96466946, 0.02003096, -0.00123048],
-		'217': [9.66480950e-01, 1.77601313e-02, -5.21420802e-04],
-		'219': [9.67139379e-01, 1.74066499e-02, -5.02629404e-04],
-		'311': [1.01216735, -0.00166866, -0.00238943],
-		'313': [0.97215999, 0.01730058, -0.00173144],
+		'111': [0.99278484, 0.00709364, -0.00182065],
+		'113': [0.99583466, 0.00512841, -0.00151745],
+		'217': [1.00166741, 4.87517031e-04, -6.63221982e-04],
+		'219': [0.997955472, 1.66235456e-03, -4.36898290e-04],
+		'311': [0.99421638, 0.00712698, -0.00234507],
+		'313': [0.98683305, 0.01021644, -0.00182772],
+		'417': [0.996066342, 3.10394890e-03, -5.71903939e-04],
+		'419': [0.997016199, 2.40564506e-03, -4.58929918e-04],
 		'30': [1.00513, 0.00301399, -0.00300699],
 		'44': [0.994769, 0.00596703, -0.00173626],
 		'70': [0.989711, 0.0106943, -0.00328671],
