@@ -22,6 +22,7 @@
 # Mike Peel   22-Jan-2016   v2.5 Convert from IDL to Python
 # Mike Peel   17-Jul-2017   v2.6 Swap 'dev' for 'latest' parameter, add QUIJOTE MFI for testing
 # Mike Peel   17-Jul-2017   v2.6a Revised QUIJOTE numbers
+# Mike Peel   18-Jul-2017   v2.7 Adding CBASS
 
 def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 	# Define dictionaries containing the coefficients for different detectors and frequencies
@@ -50,8 +51,11 @@ def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 		'28': [0.98516, 0.0134605, -0.00318]
 	}
 
-	# WMAP9 modified by Paddy Leahy, Planck 2015, MFI 2019 pre-release
+	# WMAP9 modified by Paddy Leahy, Planck 2015, MFI 2019 pre-release, CBASS-N pre-release
 	frequencies_v2 = {
+		'CBASSNI': [1.00010321, -7.23821956e-04, -1.33638136e-03],
+		'CBASSNQ': [1.00218686, 6.42043451e-03, -9.15401174e-04],
+		'CBASSNU': [0.99482118, -0.0178066, -0.00207946],
 		'111': [0.99278484, 0.00709364, -0.00182065],
 		'113': [0.99583466, 0.00512841, -0.00151745],
 		'217': [1.00166741, 4.87517031e-04, -6.63221982e-04],
@@ -70,6 +74,12 @@ def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 		'W' : [0.984848, 0.0112743, -0.00164595]
 	}
 	detectors_v2 = {
+		'CBASSNI1': [1.00034365, -2.77979154e-05, -1.42647298e-03],
+		'CBASSNQ1': [1.00174566, 4.90209927e-03, -9.91547651e-04],
+		'CBASSNU1': [0.99528283, -0.01636643, -0.00203991],
+		'CBASSNQ2': [1.00262617, 7.94492681e-03, -8.33609206e-04],
+		'CBASSNU2': [0.99435903, -0.01924111, -0.00211413],
+		'CBASSNI2': [0.99986369, -0.00142099, -0.00124559],
 		'18': [0.977484, 0.0185055, -0.00391209],
 		'19': [0.965314, 0.0234026, -0.00256943],
 		'20': [0.968436, 0.0220869, -0.00285115],

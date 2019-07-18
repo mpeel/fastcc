@@ -20,6 +20,7 @@ FUNCTION fastcc, freq, alpha, detector=detector, pair=pair,debug=debug,latest=la
     ; Mike Peel   23-Mar-2015   v2.4 Update WMAP colour corrections to corrected values from Paddy Leahy.
     ; Mike Peel   17-Jul-2019   v2.6 Change 'dev' to 'latest', add initial QUIJOTE MFI points
     ; Mike Peel   17-Jul-2019   v2.6a Revised QUIJOTE MFI points
+    ; Mike Peel   18-Jul-2019   v2.7 Adding CBASS
     
 wmap=0 ; Flag used later to determine which formula to use.
 
@@ -27,6 +28,12 @@ IF (keyword_set(latest)) THEN BEGIN ; latest version
  IF (keyword_set(detector)) THEN BEGIN
    IF (keyword_set(debug)) THEN print,'Using detector ',detector
    CASE detector OF
+   'CBASSNI1': cc = [1.00034365, -2.77979154e-05, -1.42647298e-03]
+   'CBASSNQ1': cc = [1.00174566, 4.90209927e-03, -9.91547651e-04]
+   'CBASSNU1': cc = [0.99528283, -0.01636643, -0.00203991]
+   'CBASSNQ2': cc = [1.00262617, 7.94492681e-03, -8.33609206e-04]
+   'CBASSNU2': cc = [0.99435903, -0.01924111, -0.00211413]
+   'CBASSNI2': cc = [0.99986369, -0.00142099, -0.00124559]
    '18':   cc = [0.977484, 0.0185055, -0.00391209]
    '19':   cc = [0.965314, 0.0234026, -0.00256943]
    '20':   cc = [0.968436, 0.0220869, -0.00285115]
@@ -80,6 +87,9 @@ IF (keyword_set(latest)) THEN BEGIN ; latest version
  ENDIF ELSE BEGIN ; individual detectors
    IF (keyword_set(debug)) THEN print,'Using frequency ',freq
    CASE freq OF
+     'CBASSNI': cc = [1.00010321, -7.23821956e-04, -1.33638136e-03]
+     'CBASSNQ': cc = [1.00218686, 6.42043451e-03, -9.15401174e-04]
+     'CBASSNU': cc = [0.99482118, -0.0178066, -0.00207946]
      '30': cc = [1.00513, 0.00301399, -0.00300699]
      '44': cc = [0.994769, 0.00596703, -0.00173626]
      '70': cc = [0.989711, 0.0106943, -0.00328671]

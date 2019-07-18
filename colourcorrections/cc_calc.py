@@ -135,27 +135,11 @@ def read_cbass_bandpass(filename):
 	bp6 = bp6 / np.sum(bp6)
 	return np.asarray(np.abs([freq, bp1, bp2, bp3, bp4, bp5, bp6]))
 
-# From Luke's code
-# def calc_Kcol(alpha_src,alpha_cal,g,nu0,nu):
-#     numer = np.trapz(g*np.power(nu/nu0,alpha_src),nu)
-#     denom = np.trapz(g*np.power(nu/nu0,alpha_cal),nu)
-#     return numer/denom
-
-# def calc_Kcol_inv(alpha_src,alpha_cal,g,nu0,nu):
-#     numer = np.trapz(g*np.power(nu/nu0,alpha_src),nu)
-#     denom = np.trapz(g*np.power(nu/nu0,alpha_cal),nu)
-#     return numer/denom
-
-# def calc_Kcol_correct(alpha_src,alpha_cal,g,nu0,nu):
-#     numer = np.trapz(g*np.power(nu/nu0,alpha_cal - 2),nu)
-#     denom = np.trapz(g*np.power(nu/nu0,alpha_src - 2),nu)
-#     return numer/denom
-
-# def calc_Kcol_correct2(alpha_src,alpha_cal,g,nu0,nu):
-#     numer = np.trapz(g,nu)
-#     denom = np.trapz(g*np.power(nu/nu0,alpha_src-alpha_cal),nu)
-#     return numer/denom
-
+# From Luke's code - eq11 of https://arxiv.org/abs/1306.1778
+def calc_Kcol(alpha_src,alpha_cal,g,nu0,nu):
+    numer = np.trapz(g*np.power(nu/nu0,alpha_cal),nu)
+    denom = np.trapz(g*np.power(nu/nu0,alpha_src),nu)
+    return numer/denom
 
 outdir = 'plots/'
 ensure_dir(outdir)
@@ -172,6 +156,9 @@ plot_bandpass([cbass_bp[0],cbass_bp[3]],outdir+'cbass_U1.png')
 plot_bandpass([cbass_bp[0],cbass_bp[4]],outdir+'cbass_Q2.png')
 plot_bandpass([cbass_bp[0],cbass_bp[5]],outdir+'cbass_U2.png')
 plot_bandpass([cbass_bp[0],cbass_bp[6]],outdir+'cbass_I2.png')
+cbassI = combine_bandpasses([cbass_bp[0],cbass_bp[1]], [cbass_bp[0],cbass_bp[6]])
+cbassQ = combine_bandpasses([cbass_bp[0],cbass_bp[2]], [cbass_bp[0],cbass_bp[4]])
+cbassU = combine_bandpasses([cbass_bp[0],cbass_bp[3]], [cbass_bp[0],cbass_bp[5]])
 
 cbassI1_corrections = np.ones(len(alphas))
 cbassU1_corrections = np.ones(len(alphas))
@@ -179,25 +166,23 @@ cbassQ1_corrections = np.ones(len(alphas))
 cbassU2_corrections = np.ones(len(alphas))
 cbassQ2_corrections = np.ones(len(alphas))
 cbassI2_corrections = np.ones(len(alphas))
-
-# print(calc_Kcol(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
-# print(calc_Kcol_inv(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
-# print(calc_Kcol_correct(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
-# print(calc_Kcol_correct2(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
-# print(1.0/calc_Kcol_inv(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
-# print(1.0/calc_Kcol_correct(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
-# print(1.0/calc_Kcol_correct2(-1.0, -0.299, cbass_bp[1], 4.76, cbass_bp[0]))
-# exit()
+cbassI_corrections = np.ones(len(alphas))
+cbassU_corrections = np.ones(len(alphas))
+cbassQ_corrections = np.ones(len(alphas))
 
 calindex = -0.299
+calfreq = 4.76
 usecorr = False
 for i in range(0,len(alphas)):
-	cbassI1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[1]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
-	cbassQ1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[2]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
-	cbassU1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[3]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
-	cbassQ2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[4]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
-	cbassU2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[5]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
-	cbassI2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[6]], 4.76, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassI1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[1]], calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassQ1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[2]], calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassU1_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[3]], calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassQ2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[4]], calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassU2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[5]], calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassI2_corrections[i] = calc_correction([cbass_bp[0],cbass_bp[6]], calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassI_corrections[i] = calc_correction(cbassI, calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassQ_corrections[i] = calc_correction(cbassQ, calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
+	cbassU_corrections[i] = calc_correction(cbassU, calfreq, alphas[i],calindex=calindex,usecorr=usecorr)
 
 print(alphas)
 print('From bandpasses:')
@@ -207,6 +192,16 @@ print(cbassU1_corrections)
 print(cbassQ2_corrections)
 print(cbassU2_corrections)
 print(cbassI2_corrections)
+print(cbassI_corrections)
+print(cbassQ_corrections)
+print(cbassU_corrections)
+print("Comparison to Luke's numbers for alpha=-1:")
+print(cbassI1_corrections[4], calc_Kcol(alphas[4], calindex, cbass_bp[1], calfreq, cbass_bp[0]))
+print(cbassQ1_corrections[4], calc_Kcol(alphas[4], calindex, cbass_bp[2], calfreq, cbass_bp[0]))
+print(cbassU1_corrections[4], calc_Kcol(alphas[4], calindex, cbass_bp[3], calfreq, cbass_bp[0]))
+print(cbassQ2_corrections[4], calc_Kcol(alphas[4], calindex, cbass_bp[4], calfreq, cbass_bp[0]))
+print(cbassU2_corrections[4], calc_Kcol(alphas[4], calindex, cbass_bp[5], calfreq, cbass_bp[0]))
+print(cbassI2_corrections[4], calc_Kcol(alphas[4], calindex, cbass_bp[6], calfreq, cbass_bp[0]))
 
 plt.plot(alphas,cbassI1_corrections,label='I1')
 plt.plot(alphas,cbassQ1_corrections,label='Q1')
@@ -214,6 +209,9 @@ plt.plot(alphas,cbassU1_corrections,label='U1')
 plt.plot(alphas,cbassQ2_corrections,label='Q2')
 plt.plot(alphas,cbassU2_corrections,label='U2')
 plt.plot(alphas,cbassI2_corrections,label='I2')
+plt.plot(alphas,cbassI_corrections,label='I')
+plt.plot(alphas,cbassQ_corrections,label='Q')
+plt.plot(alphas,cbassU_corrections,label='U')
 l = plt.legend(prop={'size':11})
 l.set_zorder(20)
 plt.savefig(outdir+'cbass_corrections.pdf')
@@ -238,6 +236,15 @@ plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='U2_fit
 params = np.polyfit(alphas,cbassI2_corrections,2)
 print(params)
 plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='I2_fit')
+params = np.polyfit(alphas,cbassI_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='I_fit')
+params = np.polyfit(alphas,cbassQ_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='Q_fit')
+params = np.polyfit(alphas,cbassU_corrections,2)
+print(params)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='U_fit')
 l = plt.legend(prop={'size':11})
 l.set_zorder(20)
 plt.savefig(outdir+'cbass_corrections_fit.pdf')
@@ -402,7 +409,6 @@ plt.close()
 
 print(mfi219_corrections[alphas == -0.5] - mfi419_corrections[alphas == -0.5])
 print(mfi217_corrections[alphas == -0.5] - mfi417_corrections[alphas == -0.5])
-exit()
 
 # Below is for Planck LFI
 
@@ -508,16 +514,13 @@ bp_planck_70_ds2[0][:] = bp_planck_70_ds2[0][:] + bp_shift[3]
 bp_planck_70_ds3[0][:] = bp_planck_70_ds3[0][:] + bp_shift[4]
 
 for i in range(0,len(alphas)):
-	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_70_ds1, 70.4, alphas[i])) + " - " + str(fastcc('70',alphas[i])) + " - " + str(fastcc('70',alphas[i],detector='1823',dev=True)))
+	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_70_ds1, 70.4, alphas[i])) + " - " + str(fastcc('70',alphas[i])) + " - " + str(fastcc('70',alphas[i],detector='1823',latest=True)))
 
 for i in range(0,len(alphas)):
-	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_70, 70.4, alphas[i])) + " - " + str(fastcc('70',alphas[i])) + " - " + str(fastcc('70',alphas[i],dev=True)))
+	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_70, 70.4, alphas[i])) + " - " + str(fastcc('70',alphas[i])) + " - " + str(fastcc('70',alphas[i],latest=True)))
 
 for i in range(0,len(alphas)):
-	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_44, 44.1, alphas[i])) + " - " + str(fastcc('44',alphas[i])) + " - " + str(fastcc('44',alphas[i],dev=True)))
+	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_44, 44.1, alphas[i])) + " - " + str(fastcc('44',alphas[i])) + " - " + str(fastcc('44',alphas[i],latest=True)))
 
 for i in range(0,len(alphas)):
-	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_30, 28.4, alphas[i])) + " - " + str(fastcc('30',alphas[i])) + " - " + str(fastcc('30',alphas[i],dev=True)))
-
-
-
+	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_30, 28.4, alphas[i])) + " - " + str(fastcc('30',alphas[i])) + " - " + str(fastcc('30',alphas[i],latest=True)))
