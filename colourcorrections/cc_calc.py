@@ -56,6 +56,7 @@ def combine_bandpasses(dataset1,dataset2,dataset3=[],dataset4=[]):
 
 def plot_bandpass(dataset, outname):
 	plt.plot(dataset[0],dataset[1],'b')
+	plt.yscale('log')
 	plt.savefig(outname)
 	plt.clf()
 	plt.close()
@@ -141,7 +142,7 @@ def calc_Kcol(alpha_src,alpha_cal,g,nu0,nu):
     denom = np.trapz(g*np.power(nu/nu0,alpha_src),nu)
     return numer/denom
 
-outdir = 'plots/'
+outdir = 'plots_log/'
 ensure_dir(outdir)
 
 alphas = [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
