@@ -54,9 +54,23 @@ def combine_bandpasses(dataset1,dataset2,dataset3=[],dataset4=[]):
 		newdataset[1] = (dataset1[1] + dataset2[1] + dataset3[1] + dataset4[1])/4.0
 	return newdataset
 
+def plot_bandpass_all(dataset,outname):
+	for i in range(0,len(dataset)):
+		plt.plot(dataset[i][0],dataset[i][1])#,'b')
+	# plt.yscale('log')
+	plt.xlabel('Frequency')
+	plt.ylabel('Amplitude')
+	plt.savefig(outname)
+	plt.clf()
+	plt.close()
+	return
+
+
 def plot_bandpass(dataset, outname):
 	plt.plot(dataset[0],dataset[1],'b')
 	plt.yscale('log')
+	plt.xlabel('Frequency')
+	plt.ylabel('Amplitude')
 	plt.savefig(outname)
 	plt.clf()
 	plt.close()
@@ -142,7 +156,7 @@ def calc_Kcol(alpha_src,alpha_cal,g,nu0,nu):
     denom = np.trapz(g*np.power(nu/nu0,alpha_src),nu)
     return numer/denom
 
-outdir = 'plots_log/'
+outdir = 'plots/'
 ensure_dir(outdir)
 
 alphas = [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
@@ -290,6 +304,8 @@ plot_bandpass([pol4[0], pol4[6]],outdir+'mfi_pol4_ch6.png')
 plot_bandpass([pol4[0], pol4[7]],outdir+'mfi_pol4_ch7.png')
 plot_bandpass([pol4[0], pol4[8]],outdir+'mfi_pol4_ch8.png')
 
+plot_bandpass_all([[pol1[0], pol1[1]], [pol1[0], pol1[2]], [pol1[0], pol1[3]], [pol1[0], pol1[4]], [pol1[0], pol1[5]],[pol1[0], pol1[6]], [pol1[0], pol1[7]], [pol1[0], pol1[8]], [pol2[0], pol2[1]], [pol2[0], pol2[2]], [pol2[0], pol2[3]], [pol2[0], pol2[4]], [pol2[0], pol2[5]], [pol2[0], pol2[6]], [pol2[0], pol2[7]], [pol2[0], pol2[8]], [pol3[0], pol3[1]], [pol3[0], pol3[2]], [pol3[0], pol3[3]], [pol3[0], pol3[4]], [pol3[0], pol3[5]], [pol3[0], pol3[6]], [pol3[0], pol3[7]], [pol3[0], pol3[8]], [pol4[0], pol4[1]], [pol4[0], pol4[2]], [pol4[0], pol4[3]], [pol4[0], pol4[4]], [pol4[0], pol4[5]], [pol4[0], pol4[6]], [pol4[0], pol4[7]],[pol4[0], pol4[8]]], outdir+'mfi_comb.pdf')
+
 mfi111 = combine_bandpasses([pol1[0], pol1[2]], [pol1[0], pol1[4]],[pol1[0], pol1[6]],[pol1[0], pol1[8]])
 plot_bandpass(mfi111,outdir+'mfi_111.png')
 mfi113 = combine_bandpasses([pol1[0], pol1[1]], [pol1[0], pol1[3]],[pol1[0], pol1[5]],[pol1[0], pol1[7]])
@@ -306,6 +322,9 @@ mfi417 = combine_bandpasses([pol4[0], pol4[2]], [pol4[0], pol4[4]],[pol4[0], pol
 plot_bandpass(mfi417,outdir+'mfi_417.png')
 mfi419 = combine_bandpasses([pol4[0], pol4[1]], [pol4[0], pol4[3]],[pol4[0], pol4[5]],[pol4[0], pol4[7]])
 plot_bandpass(mfi419,outdir+'mfi_419.png')
+
+
+plot_bandpass_all([mfi111, mfi113, mfi217, mfi219, mfi311, mfi313, mfi417, mfi419], outdir+'mfi_comb_band.pdf')
 
 mfi111_corrections = np.ones(len(alphas))
 mfi113_corrections = np.ones(len(alphas))
