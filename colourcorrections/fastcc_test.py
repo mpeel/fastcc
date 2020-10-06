@@ -14,6 +14,7 @@
 # Mike Peel   22-Jan-2016   v2.2 Convert from IDL to Python. Does not currently work on arrays of spectra.
 # Mike Peel   17-Jul-2019   v2.3 Update. Use np.asarray for arrays of spectra.
 # Mike Peel   18-Jul-2019   v2.4 Update to add CBASS, and nominal frequencies.
+# Mike Peel   06-Oct-2020   v2.7 Update QUIJOTE
 
 from fastcc import fastcc
 import numpy as np
@@ -45,6 +46,16 @@ print('Ka (33.0GHz)',fastcc('Ka',spectra,latest=False))
 print('Q (40.6GHz)',fastcc('Q',spectra,latest=False))
 print('V (60.8GHz)',fastcc('V',spectra,latest=False))
 print('W (93.5GHz)',fastcc('W',spectra,latest=False))
+
+print('QUIJOTE 1st version. For 11, 13, 17, 19GHz combined maps, use 311, 313, 217, 219 respectively.')
+print('QUIJOTE 111 (11.2GHz)', fastcc('111',spectra,latest=False))
+print('QUIJOTE 113 (12.8GHz)', fastcc('113',spectra,latest=False))
+print('QUIJOTE 217 (16.7GHz)', fastcc('217',spectra,latest=False))
+print('QUIJOTE 219 (18.7GHz)', fastcc('219',spectra,latest=False))
+print('QUIJOTE 311 (11.1GHz)', fastcc('311',spectra,latest=False))
+print('QUIJOTE 313 (12.9GHz)', fastcc('313',spectra,latest=False))
+print('QUIJOTE 417 (17GHz)', fastcc('417',spectra,latest=False))
+print('QUIJOTE 419 (19GHz)', fastcc('419',spectra,latest=False))
 
 print('LATEST VERSION:')
 print('Detector alpha',spectra)
@@ -110,15 +121,23 @@ print('W42',fastcc('W',spectra,detector='W42'))
 print('W4',fastcc('W',spectra,detector='W4'))
 print('W (93.5GHz)',fastcc('W',spectra))
 
-print('QUIJOTE. For 11, 13, 17, 19GHz combined maps, use 311, 313, 217, 219 respectively.')
+print('QUIJOTE 2nd version. For 11, 13, 17, 19GHz combined maps, use 311, 313, 217, 219 respectively.')
 print('QUIJOTE 111 (11.2GHz)', fastcc('111',spectra))
 print('QUIJOTE 113 (12.8GHz)', fastcc('113',spectra))
+print('QUIJOTE 111 pol (11.2GHz)', fastcc('111p',spectra))
+print('QUIJOTE 113 pol (12.8GHz)', fastcc('113p',spectra))
 print('QUIJOTE 217 (16.7GHz)', fastcc('217',spectra))
 print('QUIJOTE 219 (18.7GHz)', fastcc('219',spectra))
+print('QUIJOTE 217 pol (16.7GHz)', fastcc('217p',spectra))
+print('QUIJOTE 219 pol (18.7GHz)', fastcc('219p',spectra))
 print('QUIJOTE 311 (11.1GHz)', fastcc('311',spectra))
 print('QUIJOTE 313 (12.9GHz)', fastcc('313',spectra))
+print('QUIJOTE 311 pol (11.1GHz)', fastcc('311p',spectra))
+print('QUIJOTE 313 pol (12.9GHz)', fastcc('313p',spectra))
 print('QUIJOTE 417 (17GHz)', fastcc('417',spectra))
 print('QUIJOTE 419 (19GHz)', fastcc('419',spectra))
+print('QUIJOTE 417 pol (17GHz)', fastcc('417p',spectra))
+print('QUIJOTE 419 pol (19GHz)', fastcc('419p',spectra))
 
 print('CBASS-N, 4.76GHz:')
 print("CBASS-N I1:", fastcc('CBASS', spectra,detector='CBASSNI1'))
