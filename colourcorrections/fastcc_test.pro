@@ -12,7 +12,7 @@
 ; Mike Peel   17-Jul-2019   v2.3 Update. Use np.asarray for arrays of spectra.
 ; Mike Peel   18-Jul-2019   v2.4 Update to add CBASS, and nominal frequencies.
 ; Mike Peel   06-Oct-2020   v2.7 Update QUIJOTE
-
+; Mike Peel   21-Oct-2020   v2.7.1 Note that WMAP9 in original is different frequencies from latest
 PRO fastcc_test
 
 spectra = [-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
@@ -37,11 +37,11 @@ print,'LFI-27',fastcc('30',spectra,detector='27')
 print,'LFI-28',fastcc('30',spectra,detector='28')
 print,'30GHz (28.4GHz)',fastcc('30',spectra)
 
-print,'WMAP'
+print,'WMAP from Bennet et al. 2012'
 print,'K (22.8GHz)',fastcc('K',spectra)
 print,'Ka (33.0GHz)',fastcc('Ka',spectra)
-print,'Q (40.6GHz)',fastcc('Q',spectra)
-print,'V (60.8GHz)',fastcc('V',spectra)
+print,'Q (40.7GHz - different from latest)',fastcc('Q',spectra)
+print,'V (60.7GHz - different from latest)',fastcc('V',spectra)
 print,'W (93.5GHz)',fastcc('W',spectra)
 
 print,'QUIJOTE 1st version. For 11, 13, 17, 19GHz combined maps, use 311, 313, 217, 219 respectively.'
