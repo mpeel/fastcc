@@ -6,7 +6,7 @@
  # Actual frequencies are 28.4, 44.1 or 70.4 for LFI; 22.80 33.00 40.60 60.80 93.50 for WMAP
  # detector (optional) should be between '18' and '28' inclusive for LFI, as a string; they should of the style 'K11', 'K12', 'K1' for WMAP.
 # set 'debug' to see debug messages
-# set 'latest=True' to use the latest WMAP and Planck numbers (default), otherwise set to 'False' use the WMAP9 and Planck 2013 values.
+# set 'option=2' to use the 2015 WMAP and Planck numbers (default), otherwise set to '1' use the WMAP9 and Planck 2013 values. DEFAULT is 2
 #
 # Version history:
 # Mike Peel   01-Feb-2013   v1.0 Initial version
@@ -24,8 +24,9 @@
 # Mike Peel   17-Jul-2019   v2.6a Revised QUIJOTE numbers
 # Mike Peel   18-Jul-2019   v2.7 Adding CBASS
 # Mike Peel   06-Oct-2020   v2.8 New QUIJOTE numbers
+# Mike Peel   16-Nov-2020   v2.9 BREAKING CHANGE, 'latest' is now 'option'. Adding HFI power laws.
 
-def fastcc(freq, alpha, detector=False, debug=False, latest=True):
+def fastcc(freq, alpha, detector=False, debug=False, option=3):
 	# Define dictionaries containing the coefficients for different detectors and frequencies
 	# WMAP9 + Planck 2013 + QUIJOTE MFI original
 	frequencies_v1 = {
@@ -40,6 +41,12 @@ def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 		'30': [0.98520, 0.0131778, -0.00302],
 		'44': [0.99059, 0.0079600, -0.00169],
 		'70': [0.98149, 0.0152737, -0.00325],
+		'100': [0.9961675, -0.00797581, -0.00443089],
+		'143': [1.0116307,  0.0067101,  -0.00468848],
+		'217': [0.98497796,-0.01795222, -0.003634  ],
+		'353': [0.9840204,  -0.01869955, -0.00333974],
+		'545': [0.985983,   -0.01698006, -0.00421302],
+		'857': [1.002219,   -0.00147517, -0.0044173 ],
 		'K' : {'nu': [20.6, 22.8, 24.9], 'w': [0.332906, 0.374325, 0.292768], 'dT': 1.013438},
 		'Ka': {'nu': [30.4, 33.0, 35.6], 'w': [0.322425, 0.387532, 0.290043], 'dT': 1.028413},
 		'Q' : {'nu': [37.8, 40.7, 43.8], 'w': [0.353635, 0.342752, 0.303613], 'dT': 1.043500},
@@ -84,6 +91,12 @@ def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 		'30': [1.00513, 0.00301399, -0.00300699],
 		'44': [0.994769, 0.00596703, -0.00173626],
 		'70': [0.989711, 0.0106943, -0.00328671],
+		'100': [0.99627715, -0.00786048, -0.00442135],
+		'143': [1.0112897,   0.00638959, -0.00468345],
+		'217': [0.9849717,  -0.01795939, -0.00363461],
+		'353': [0.98404306, -0.01867278, -0.00333562],
+		'545': [0.9860728,  -0.01689775, -0.00421863],
+		'857': [1.0023118,  -0.001392,   -0.00442368],
 		'K' : [0.972902, 0.0190469, -0.00276464],
 		'Ka': [0.983787, 0.0117567, -0.00183716],
 		'Q' : [0.996854, 0.00496893, -0.00181359],
@@ -144,12 +157,54 @@ def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 		'W4': [0.982185, 0.0130277, -0.00170889]
 	}
 
+
+	# WMAP9 modified by Paddy Leahy, Planck LFI 2015, MFI 2019 pre-release, CBASS-N pre-release, HFI 2018
+	frequencies_v3 = {
+		'CBASSNI': [1.00010321, -7.23821956e-04, -1.33638136e-03],
+		'CBASSNQ': [1.00218686, 6.42043451e-03, -9.15401174e-04],
+		'CBASSNU': [0.99482118, -0.0178066, -0.00207946],
+		'111': [0.99278484, 0.00709364, -0.00182065],
+		'113': [0.99583466, 0.00512841, -0.00151745],
+		'111p': [0.99278484, 0.00709364, -0.00182065],
+		'113p': [0.99583466, 0.00512841, -0.00151745],
+		'217': [1.01297024, -5.10076638e-03, -6.83231540e-04],
+		'219': [1.01753081, -7.54598924e-03, -6.24661331e-04],
+		'217p': [1.01651591, -6.41886504e-03, -9.27987505e-04],
+		'219p': [1.01362151, -0.00454101, -0.00108849],
+		'311': [0.98205768, 0.01194747, -0.00153167],
+		'313': [1.00237737, 8.69627158e-04, -1.05404485e-03],
+		'311p': [0.9843027, 0.01109582, -0.00167935],
+		'313p': [0.99589013, 0.00512221, -0.00149134],
+		'417': [9.88881900e-01, 6.99633538e-03, -7.13114820e-04],
+		'419': [9.88613460e-01, 7.56366528e-03, -9.18841805e-04],
+		'417p': [1.00297783, 8.68521956e-04, -1.21513713e-03],
+		'419p': [0.98434787, 0.01034064, -0.00122269],
+		'30': [1.00513, 0.00301399, -0.00300699],
+		'44': [0.994769, 0.00596703, -0.00173626],
+		'70': [0.989711, 0.0106943, -0.00328671],
+		'100': [9.9714231e-01, -6.9773742e-03, -4.3697958e-03],
+		'143': [1.0125265e+00,  7.5433883e-03, -4.7070021e-03],
+		'217': [9.8706579e-01, -1.6046101e-02, -3.7911625e-03],
+		'353': [9.8564571e-01, -1.7143920e-02, -3.3450378e-03],
+		'545': [9.8595744e-01, -1.7003248e-02, -4.2110542e-03],
+		'857': [1.0033977e+00, -3.3857918e-04, -4.4123940e-03],
+		'K' : [0.972902, 0.0190469, -0.00276464],
+		'Ka': [0.983787, 0.0117567, -0.00183716],
+		'Q' : [0.996854, 0.00496893, -0.00181359],
+		'V' : [0.980322, 0.0143631, -0.00223596],
+		'W' : [0.984848, 0.0112743, -0.00164595]
+	}
+	# These haven't changed
+	detectors_v3 = detectors_v2
+
 	# Pull out the desired coefficients from the above arrays
 	if (detector != False):
 		if (debug == True):
 			print('Using detector ',detector)
 
-		if (latest == True):
+		if (option == 3):
+			cc = detectors_v3.get(detector, 0)
+		elif (option == 2):
 			cc = detectors_v2.get(detector, 0)
 		else:
 			cc = detectors_v1.get(detector, 0)
@@ -162,7 +217,9 @@ def fastcc(freq, alpha, detector=False, debug=False, latest=True):
 		if (debug == True):
 			print('Using frequency ',freq)
 
-		if (latest == True):
+		if (option == 3):
+			cc = frequencies_v3.get(freq, 0)
+		elif (option == 2):
 			cc = frequencies_v2.get(freq, 0)
 		else:
 			cc = frequencies_v1.get(freq, 0)

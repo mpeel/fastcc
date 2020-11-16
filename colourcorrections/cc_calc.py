@@ -13,8 +13,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 from astrocode.fitspectrum.astroutils import *
-from astrocode.fitspectrum.spectra import planckcorr, get_spectrum_constants
 from fastcc import *
+
+def get_spectrum_constants():
+	const = {
+		'h': 6.626e-34,
+		'k': 1.381e-23,
+		'c': 2.997e8,
+		'pi': np.pi,
+		'dust_optical_depth_freq': 1198.8,
+		'tcmb': 2.7255
+	}
+	return const
+
+def planckcorr(const, nu_ghz):
+	x = const['h'] * np.asarray(nu_ghz) * 1.0e9 / (const['k'] * const['tcmb'])
+	value = (np.exp(x)-1.0)**2.0 / (x**2. * np.exp(x))
+	return value
+
 
 def read_lfi_rimo_bandpass(filename,ext=0):
 	inputfits = fits.open(filename)
