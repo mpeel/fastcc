@@ -251,4 +251,22 @@ print,"CBASS-N I:", fastcc('CBASSNI', spectra)
 print,"CBASS-N P:", fastcc('CBASSNP', spectra)
 
 
+print,'DIRBE:'
+print,"B10:", fastcc('DB10', spectra)
+print,"B9:", fastcc('DB9', spectra)
+print,"B8:", fastcc('DB8', spectra)
+print,"B7:", fastcc('DB7', spectra)
+print,"B6:", fastcc('DB6', spectra)
+print,"B5:", fastcc('DB5', spectra)
+print,"B4:", fastcc('DB4', spectra)
+print,"B3:", fastcc('DB3', spectra)
+print,"B2:", fastcc('DB2', spectra)
+print,"B1:", fastcc('DB1', spectra)
+
+print,'IRAS:'
+print,"100um:", fastcc('I100', spectra)
+print," 60um:", fastcc('I60', spectra)
+print," 25um:", fastcc('I25', spectra)
+print," 12um:", fastcc('I12', spectra)
+
 END

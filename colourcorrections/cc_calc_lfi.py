@@ -24,7 +24,7 @@ alphas = np.asarray(alphas)
 
 # Below is for Planck LFI
 
-# 2013 release. THE RIMO IS WRONG - it has an incorrect frequency shift in the bandpass.
+# 2013 release. THE RIMO IS WRONG - it has an incorrect frequency shift of -0.1GHz in the bandpass.
 planck_lfi_filename = '/Users/mpeel/Documents/maps/planck2013/LFI_RIMO_R1.12.fits'
 bp_planck_30 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=2)
 plot_bandpass(bp_planck_30,outdir+'planck_112_30.png')
@@ -33,7 +33,7 @@ plot_bandpass(bp_planck_44,outdir+'planck_112_44.png')
 bp_planck_70 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=4)
 plot_bandpass(bp_planck_70,outdir+'planck_112_70.png')
 
-# 2015 release. Mistake in previous version fixed. Extra frequency shift needs to be applied.
+# 2015 release. Mistake in previous version fixed. Extra frequency shift from Commander needs to be applied.
 planck_lfi_filename = '/Users/mpeel/Documents/maps/planck2015/LFI_RIMO_R2.50.fits'
 bp_planck_30 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=25)
 plot_bandpass(bp_planck_30,outdir+'planck_250_30.png')
