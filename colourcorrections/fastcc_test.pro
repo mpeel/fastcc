@@ -264,7 +264,7 @@ print,"B2:", fastcc('DB2', spectra)
 print,"B1:", fastcc('DB1', spectra)
 
 print,'IRAS:'
-print,"100um:", fastcc('I100', spectra)
+print,"100um ", fastcc('I100', spectra)
 print," 60um:", fastcc('I60', spectra)
 print," 25um:", fastcc('I25', spectra)
 print," 12um:", fastcc('I12', spectra)
