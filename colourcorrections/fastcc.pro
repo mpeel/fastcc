@@ -412,10 +412,10 @@ IF (wmap) THEN BEGIN
  retfreq = nu[1]
 
 ENDIF ELSE BEGIN
-  IF SIZE(cc) eq 6 THEN BEGIN
+  IF SIZE(cc, /N_ELEMENTS) eq 6 THEN BEGIN
      fastCC = cc[0] + cc[1]*td + cc[2]*td*td + cc[3]*bd + cc[4]*bd*bd
      retfreq = cc[5]
-  ENDIF ELSE IF SIZE(cc) eq 5 THEN BEGIN
+  ENDIF ELSE IF SIZE(cc, /N_ELEMENTS) eq 5 THEN BEGIN
      fastCC = cc[0] + cc[1]*alpha + cc[2]*alpha*alpha + cc[3]*alpha*alpha*alpha
      retfreq = cc[4]
   ENDIF ELSE BEGIN
