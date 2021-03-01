@@ -15,6 +15,10 @@
 ; Mike Peel   21-Oct-2020   v2.7.1 Note that WMAP9 in original is different frequencies from latest
 ; Mike Peel   16-Oct-2020   v2.9 BREAKING CHANGE, 'latest' is now 'option', adding HFI and 2018
 ; Mike Peel   22-Jan-2020   v3.0 BREAKING CHANGE, frequency/detector labels now have prefixes. Upgrading to return frequencies and to prepare for colour corrections for thermal dust models for Planck HFI (not added in this version). Updated numbers for MFI, HFI, C-BASS.
+; Mike Peel   10-Feb-2021   v3.1 Adding DIRBE and IRAS
+; Mike Peel   26-Feb-2021   v3.2 Updating QUIJOTE, HFI, DIRBE, IRAS, adding HFI modified black body
+; Mike Peel   01-Mar-2021   v3.3 Updating QUIJOTE 17 and 19GHz
+
 PRO fastcc_test
 
 spectra = [-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
@@ -52,15 +56,33 @@ print,'Q (40.7GHz - different from latest)',fastcc('WQ',spectra,option=1)
 print,'V (60.7GHz - different from latest)',fastcc('WV',spectra,option=1)
 print,'W (93.5GHz)',fastcc('WW',spectra,option=1)
 
-print,'QUIJOTE 1st version. For 11, 13, 17, 19GHz combined maps, use 311, 313, 217, 219 respectively.'
-print,'QUIJOTE 111 (11.2GHz)',fastcc('Q111',spectra,option=1)
-print,'QUIJOTE 113 (12.8GHz)',fastcc('Q113',spectra,option=1)
-print,'QUIJOTE 217 (16.7GHz)',fastcc('Q217',spectra,option=1)
-print,'QUIJOTE 219 (18.7GHz)',fastcc('Q219',spectra,option=1)
-print,'QUIJOTE 311 (11.1GHz)',fastcc('Q311',spectra,option=1)
-print,'QUIJOTE 313 (12.9GHz)',fastcc('Q313',spectra,option=1)
-print,'QUIJOTE 417 (17GHz)',fastcc('Q417',spectra,option=1)
-print,'QUIJOTE 419 (19GHz)',fastcc('Q419',spectra,option=1)
+print,'QUIJOTE 1st version.'
+print,'QUIJOTE 111 (11.2GHz)',fastcc('111',spectra,detector='Q111',option=1)
+print,'QUIJOTE 113 (12.8GHz)',fastcc('113',spectra,detector='Q113',option=1)
+print,'QUIJOTE 111 pol (11.2GHz)',fastcc('111p',spectra,detector='Q111p',option=1)
+print,'QUIJOTE 113 pol (12.8GHz)',fastcc('113p',spectra,detector='Q113p',option=1)
+print,'QUIJOTE 217 (16.7GHz)',fastcc('217',spectra,detector='Q217',option=1)
+print,'QUIJOTE 219 (18.7GHz)',fastcc('219',spectra,detector='Q219',option=1)
+print,'QUIJOTE 217 pol (16.7GHz)',fastcc('Q17p',spectra,detector='Q217p',option=1)
+print,'QUIJOTE 219 pol (18.7GHz)',fastcc('Q19p',spectra,detector='Q219p',option=1)
+print,'QUIJOTE 311 (11.1GHz)',fastcc('Q11',spectra,detector='Q311',option=1)
+print,'QUIJOTE 313 (12.9GHz)',fastcc('Q13',spectra,detector='Q313',option=1)
+print,'QUIJOTE 311 pol (11.1GHz)',fastcc('Q11p',spectra,detector='Q311p',option=1)
+print,'QUIJOTE 313 pol (12.9GHz)',fastcc('Q13p',spectra,detector='Q313p',option=1)
+print,'QUIJOTE 417 (17GHz)',fastcc('Q17',spectra,detector='Q417',option=1)
+print,'QUIJOTE 419 (19GHz)',fastcc('Q19',spectra,detector='Q419',option=1)
+print,'QUIJOTE 417 pol (17GHz)',fastcc('Q17p',spectra,detector='Q417p',option=1)
+print,'QUIJOTE 419 pol (19GHz)',fastcc('Q19p',spectra,detector='Q419p',option=1)
+print,'QUIJOTE 11 (11.1GHz)',fastcc('Q11',spectra,option=1)
+print,'QUIJOTE 13 (12.9GHz)',fastcc('Q13',spectra,option=1)
+print,'QUIJOTE 11 pol (11.1GHz)',fastcc('Q11p',spectra,option=1)
+print,'QUIJOTE 13 pol (12.9GHz)',fastcc('Q13p',spectra,option=1)
+print,'QUIJOTE 17 (16.7GHz)',fastcc('Q17',spectra,option=1)
+print,'QUIJOTE 19 (18.7GHz)',fastcc('Q19',spectra,option=1)
+print,'QUIJOTE 17 pol (16.7GHz)',fastcc('Q17p',spectra,option=1)
+print,'QUIJOTE 19 pol (18.7GHz)',fastcc('Q19p',spectra,option=1)
+
+
 
 print,''
 print,'2015 VERSION:'
@@ -134,23 +156,31 @@ print,'W42',fastcc('WW',spectra,detector='WW42',option=2)
 print,'W4',fastcc('WW',spectra,detector='WW4',option=2)
 print,'W (93.5GHz)',fastcc('WW',spectra,option=2)
 
-print,'QUIJOTE 2nd version. For 11, 13, 17, 19GHz combined maps, use 311, 313, 217, 219 respectively.'
-print,'QUIJOTE 111 (11.2GHz)',fastcc('Q111',spectra,option=2)
-print,'QUIJOTE 113 (12.8GHz)',fastcc('Q113',spectra,option=2)
-print,'QUIJOTE 111 pol (11.2GHz)',fastcc('Q111p',spectra,option=2)
-print,'QUIJOTE 113 pol (12.8GHz)',fastcc('Q113p',spectra,option=2)
-print,'QUIJOTE 217 (16.7GHz)',fastcc('Q217',spectra,option=2)
-print,'QUIJOTE 219 (18.7GHz)',fastcc('Q219',spectra,option=2)
-print,'QUIJOTE 217 pol (16.7GHz)',fastcc('Q217p',spectra,option=2)
-print,'QUIJOTE 219 pol (18.7GHz)',fastcc('Q219p',spectra,option=2)
-print,'QUIJOTE 311 (11.1GHz)',fastcc('Q311',spectra,option=2)
-print,'QUIJOTE 313 (12.9GHz)',fastcc('Q313',spectra,option=2)
-print,'QUIJOTE 311 pol (11.1GHz)',fastcc('Q311p',spectra,option=2)
-print,'QUIJOTE 313 pol (12.9GHz)',fastcc('Q313p',spectra,option=2)
-print,'QUIJOTE 417 (17GHz)',fastcc('Q417',spectra,option=2)
-print,'QUIJOTE 419 (19GHz)',fastcc('Q419',spectra,option=2)
-print,'QUIJOTE 417 pol (17GHz)',fastcc('Q417p',spectra,option=2)
-print,'QUIJOTE 419 pol (19GHz)',fastcc('Q419p',spectra,option=2)
+print,'QUIJOTE 2nd version.'
+print,'QUIJOTE 111 (11.2GHz)',fastcc('111',spectra,detector='Q111',option=2)
+print,'QUIJOTE 113 (12.8GHz)',fastcc('113',spectra,detector='Q113',option=2)
+print,'QUIJOTE 111 pol (11.2GHz)',fastcc('111p',spectra,detector='Q111p',option=2)
+print,'QUIJOTE 113 pol (12.8GHz)',fastcc('113p',spectra,detector='Q113p',option=2)
+print,'QUIJOTE 217 (16.7GHz)',fastcc('217',spectra,detector='Q217',option=2)
+print,'QUIJOTE 219 (18.7GHz)',fastcc('219',spectra,detector='Q219',option=2)
+print,'QUIJOTE 217 pol (16.7GHz)',fastcc('Q17p',spectra,detector='Q217p',option=2)
+print,'QUIJOTE 219 pol (18.7GHz)',fastcc('Q19p',spectra,detector='Q219p',option=2)
+print,'QUIJOTE 311 (11.1GHz)',fastcc('Q11',spectra,detector='Q311',option=2)
+print,'QUIJOTE 313 (12.9GHz)',fastcc('Q13',spectra,detector='Q313',option=2)
+print,'QUIJOTE 311 pol (11.1GHz)',fastcc('Q11p',spectra,detector='Q311p',option=2)
+print,'QUIJOTE 313 pol (12.9GHz)',fastcc('Q13p',spectra,detector='Q313p',option=2)
+print,'QUIJOTE 417 (17GHz)',fastcc('Q17',spectra,detector='Q417',option=2)
+print,'QUIJOTE 419 (19GHz)',fastcc('Q19',spectra,detector='Q419',option=2)
+print,'QUIJOTE 417 pol (17GHz)',fastcc('Q17p',spectra,detector='Q417p',option=2)
+print,'QUIJOTE 419 pol (19GHz)',fastcc('Q19p',spectra,detector='Q419p',option=2)
+print,'QUIJOTE 11 (11.1GHz)',fastcc('Q11',spectra,option=2)
+print,'QUIJOTE 13 (12.9GHz)',fastcc('Q13',spectra,option=2)
+print,'QUIJOTE 11 pol (11.1GHz)',fastcc('Q11p',spectra,option=2)
+print,'QUIJOTE 13 pol (12.9GHz)',fastcc('Q13p',spectra,option=2)
+print,'QUIJOTE 17 (16.8GHz)',fastcc('Q17',spectra,option=2)
+print,'QUIJOTE 19 (18.8GHz)',fastcc('Q19',spectra,option=2)
+print,'QUIJOTE 17 pol (16.8GHz)',fastcc('Q17p',spectra,option=2)
+print,'QUIJOTE 19 pol (18.8GHz)',fastcc('Q19p',spectra,option=2)
 
 print,'CBASS-N, 4.76GHz:'
 print,"CBASS-N I:", fastcc('CBASSNI', spectra,option=2)
@@ -229,27 +259,34 @@ print,'W4',fastcc('WW',spectra,detector='WW4')
 print,'W (93.5GHz)',fastcc('WW',spectra)
 
 print,'QUIJOTE 2nd version. For 11, 13, 17, 19GHz combined maps, use 311, 313, 217, 219 respectively.'
-print,'QUIJOTE 111 (11.2GHz)',fastcc('Q111',spectra)
-print,'QUIJOTE 113 (12.8GHz)',fastcc('Q113',spectra)
-print,'QUIJOTE 111 pol (11.2GHz)',fastcc('Q111p',spectra)
-print,'QUIJOTE 113 pol (12.8GHz)',fastcc('Q113p',spectra)
-print,'QUIJOTE 217 (16.7GHz)',fastcc('Q217',spectra)
-print,'QUIJOTE 219 (18.7GHz)',fastcc('Q219',spectra)
-print,'QUIJOTE 217 pol (16.7GHz)',fastcc('Q217p',spectra)
-print,'QUIJOTE 219 pol (18.7GHz)',fastcc('Q219p',spectra)
-print,'QUIJOTE 311 (11.1GHz)',fastcc('Q311',spectra)
-print,'QUIJOTE 313 (12.9GHz)',fastcc('Q313',spectra)
-print,'QUIJOTE 311 pol (11.1GHz)',fastcc('Q311p',spectra)
-print,'QUIJOTE 313 pol (12.9GHz)',fastcc('Q313p',spectra)
-print,'QUIJOTE 417 (17GHz)',fastcc('Q417',spectra)
-print,'QUIJOTE 419 (19GHz)',fastcc('Q419',spectra)
-print,'QUIJOTE 417 pol (17GHz)',fastcc('Q417p',spectra)
-print,'QUIJOTE 419 pol (19GHz)',fastcc('Q419p',spectra)
+print,'QUIJOTE 111 (11.2GHz)',fastcc('111',spectra,detector='Q111')
+print,'QUIJOTE 113 (12.8GHz)',fastcc('113',spectra,detector='Q113')
+print,'QUIJOTE 111 pol (11.2GHz)',fastcc('111p',spectra,detector='Q111p')
+print,'QUIJOTE 113 pol (12.8GHz)',fastcc('113p',spectra,detector='Q113p')
+print,'QUIJOTE 217 (16.7GHz)',fastcc('217',spectra,detector='Q217')
+print,'QUIJOTE 219 (18.7GHz)',fastcc('219',spectra,detector='Q219')
+print,'QUIJOTE 217 pol (16.7GHz)',fastcc('Q17p',spectra,detector='Q217p')
+print,'QUIJOTE 219 pol (18.7GHz)',fastcc('Q19p',spectra,detector='Q219p')
+print,'QUIJOTE 311 (11.1GHz)',fastcc('Q11',spectra,detector='Q311')
+print,'QUIJOTE 313 (12.9GHz)',fastcc('Q13',spectra,detector='Q313')
+print,'QUIJOTE 311 pol (11.1GHz)',fastcc('Q11p',spectra,detector='Q311p')
+print,'QUIJOTE 313 pol (12.9GHz)',fastcc('Q13p',spectra,detector='Q313p')
+print,'QUIJOTE 417 (17GHz)',fastcc('Q17',spectra,detector='Q417')
+print,'QUIJOTE 419 (19GHz)',fastcc('Q19',spectra,detector='Q419')
+print,'QUIJOTE 417 pol (17GHz)',fastcc('Q17p',spectra,detector='Q417p')
+print,'QUIJOTE 419 pol (19GHz)',fastcc('Q19p',spectra,detector='Q419p')
+print,'QUIJOTE 11 (11.1GHz)',fastcc('Q11',spectra)
+print,'QUIJOTE 13 (12.9GHz)',fastcc('Q13',spectra)
+print,'QUIJOTE 11 pol (11.1GHz)',fastcc('Q11p',spectra)
+print,'QUIJOTE 13 pol (12.9GHz)',fastcc('Q13p',spectra)
+print,'QUIJOTE 17 (16.8GHz)',fastcc('Q17',spectra)
+print,'QUIJOTE 19 (18.8GHz)',fastcc('Q19',spectra)
+print,'QUIJOTE 17 pol (16.8GHz)',fastcc('Q17p',spectra)
+print,'QUIJOTE 19 pol (18.8GHz)',fastcc('Q19p',spectra)
 
 print,'CBASS-N, 4.76GHz:'
 print,"CBASS-N I:", fastcc('CBASSNI', spectra)
 print,"CBASS-N P:", fastcc('CBASSNP', spectra)
-
 
 print,'DIRBE:'
 print,"B10:", fastcc('DB10', spectra)

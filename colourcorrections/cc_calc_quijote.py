@@ -125,12 +125,29 @@ plot_bandpass(mfi417,outdir+'mfi_417.png')
 mfi419 = combine_bandpasses([pol4[0], pol4[1]], [pol4[0], pol4[3]],[pol4[0], pol4[5]],[pol4[0], pol4[7]])
 plot_bandpass(mfi419,outdir+'mfi_419.png')
 mfi417_pol = combine_bandpasses([pol4_pol[0], pol4_pol[2]], [pol4_pol[0], pol4_pol[4]],[pol4_pol[0], pol4_pol[6]],[pol4_pol[0], pol4_pol[8]])
-plot_bandpass(mfi417_pol,outdir+'mfi_417.png')
+plot_bandpass(mfi417_pol,outdir+'mfi_417_pol.png')
 mfi419_pol = combine_bandpasses([pol4_pol[0], pol4_pol[1]], [pol4_pol[0], pol4_pol[3]],[pol4_pol[0], pol4_pol[5]],[pol4_pol[0], pol4_pol[7]])
 plot_bandpass(mfi419_pol,outdir+'mfi_419_pol.png')
 
 
 plot_bandpass_all([mfi111, mfi113, mfi217, mfi219, mfi311, mfi313, mfi417, mfi419], outdir+'mfi_comb_band.pdf')
+
+
+# And the weighted combination
+W417 = np.asarray([0.3616885 , 0.73196787, 0.73196787])
+W419 = np.asarray([0.41912782, 0.7880423 , 0.7880423 ])
+W217 = 1.0-W417
+W219 = 1.0-W419
+
+mfi17 = np.asarray(mfi217)*W217[0] + np.asarray(mfi417)*W417[0]
+mfi19 = np.asarray(mfi219)*W219[0] + np.asarray(mfi419)*W419[0]
+mfi17_pol = np.asarray(mfi217_pol)*W217[1] + np.asarray(mfi417_pol)*W417[1]
+mfi19_pol = np.asarray(mfi219_pol)*W219[1] + np.asarray(mfi419_pol)*W419[1]
+plot_bandpass(mfi17,outdir+'mfi_17.png')
+plot_bandpass(mfi19,outdir+'mfi_19.png')
+plot_bandpass(mfi17_pol,outdir+'mfi_17_pol.png')
+plot_bandpass(mfi19_pol,outdir+'mfi_19_pol.png')
+
 
 mfi111_corrections = np.ones(len(alphas))
 mfi113_corrections = np.ones(len(alphas))
@@ -148,6 +165,11 @@ mfi417_corrections = np.ones(len(alphas))
 mfi419_corrections = np.ones(len(alphas))
 mfi417_pol_corrections = np.ones(len(alphas))
 mfi419_pol_corrections = np.ones(len(alphas))
+
+mfi17_corrections = np.ones(len(alphas))
+mfi19_corrections = np.ones(len(alphas))
+mfi17_pol_corrections = np.ones(len(alphas))
+mfi19_pol_corrections = np.ones(len(alphas))
 
 calindex = 2.0#-0.3
 usecorr = False
@@ -169,6 +191,11 @@ for i in range(0,len(alphas)):
 	mfi417_pol_corrections[i] = calc_correction(mfi417_pol, 17.0, alphas[i],calindex=calindex,usecorr=usecorr)
 	mfi419_pol_corrections[i] = calc_correction(mfi419_pol, 19.0, alphas[i],calindex=calindex,usecorr=usecorr)
 
+	mfi17_corrections[i] = calc_correction(mfi417, 16.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi19_corrections[i] = calc_correction(mfi419, 18.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi17_pol_corrections[i] = calc_correction(mfi417_pol, 16.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi19_pol_corrections[i] = calc_correction(mfi419_pol, 18.8, alphas[i],calindex=calindex,usecorr=usecorr)
+
 print(alphas)
 print('From bandpasses:')
 print(mfi111_corrections)
@@ -187,13 +214,17 @@ print(mfi417_corrections)
 print(mfi419_corrections)
 print(mfi417_pol_corrections)
 print(mfi419_pol_corrections)
-print('From fastcc:')
-print(fastcc('Q111',alpha=alphas))
-print(fastcc('Q113',alpha=alphas))
-print(fastcc('Q217',alpha=alphas))
-print(fastcc('Q219',alpha=alphas))
-print(fastcc('Q311',alpha=alphas))
-print(fastcc('Q313',alpha=alphas))
+print(mfi17_corrections)
+print(mfi19_corrections)
+print(mfi17_pol_corrections)
+print(mfi19_pol_corrections)
+# print('From fastcc:')
+# print(fastcc('Q111',alpha=alphas))
+# print(fastcc('Q113',alpha=alphas))
+# print(fastcc('Q217',alpha=alphas))
+# print(fastcc('Q219',alpha=alphas))
+# print(fastcc('Q311',alpha=alphas))
+# print(fastcc('Q313',alpha=alphas))
 
 plt.plot(alphas,mfi111_corrections,label='111')
 plt.plot(alphas,mfi113_corrections,label='113')
@@ -226,6 +257,27 @@ l.set_zorder(20)
 plt.xlabel('Spectral index')
 plt.ylabel('Colour correction')
 plt.savefig(outdir+'mfi_corrections_pol.pdf')
+plt.clf()
+plt.close()
+
+
+plt.plot(alphas,mfi217_corrections,'b--',label='217')
+plt.plot(alphas,mfi219_corrections,'g--',label='219')
+plt.plot(alphas,mfi417_corrections,'b-.',label='417')
+plt.plot(alphas,mfi419_corrections,'g-.',label='419')
+plt.plot(alphas,mfi217_pol_corrections,'r--',label='217pol')
+plt.plot(alphas,mfi219_pol_corrections,'m--',label='219pol')
+plt.plot(alphas,mfi417_pol_corrections,'r-.',label='417pol')
+plt.plot(alphas,mfi419_pol_corrections,'m-.',label='419pol')
+plt.plot(alphas,mfi17_corrections,'b-',label='17')
+plt.plot(alphas,mfi19_corrections,'g-',label='19')
+plt.plot(alphas,mfi17_pol_corrections,'r-',label='17pol')
+plt.plot(alphas,mfi19_pol_corrections,'m-',label='19pol')
+l = plt.legend(prop={'size':11})
+l.set_zorder(20)
+plt.xlabel('Spectral index')
+plt.ylabel('Colour correction')
+plt.savefig(outdir+'mfi_corrections_17_19.pdf')
 plt.clf()
 plt.close()
 
@@ -276,13 +328,30 @@ params = np.polyfit(alphas,mfi419_pol_corrections,2)
 plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='419pol_fit')
 print("'Q419p': ["+str(params[2]) + ', ' + str(params[1]) + ', ' + str(params[0]) + ', 19.0],')
 l = plt.legend(prop={'size':11})
+
+params = np.polyfit(alphas,mfi17_corrections,2)
+print("'Q17': ["+str(params[2]) + ', ' + str(params[1]) + ', ' + str(params[0]) + ', 16.8],')
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='17_fit')
+params = np.polyfit(alphas,mfi19_corrections,2)
+print("'Q19': ["+str(params[2]) + ', ' + str(params[1]) + ', ' + str(params[0]) + ', 18.8],')
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='19_fit')
+params = np.polyfit(alphas,mfi17_pol_corrections,2)
+print("'Q17p': ["+str(params[2]) + ', ' + str(params[1]) + ', ' + str(params[0]) + ', 16.8],')
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='17pol_fit')
+params = np.polyfit(alphas,mfi19_pol_corrections,2)
+plt.plot(alphas,params[2]+params[1]*alphas+params[0]*alphas**2,'-',label='19pol_fit')
+print("'Q19p': ["+str(params[2]) + ', ' + str(params[1]) + ', ' + str(params[0]) + ', 18.8],')
+l = plt.legend(prop={'size':11})
+
+
 l.set_zorder(20)
 plt.xlabel('Spectral index')
 plt.ylabel('Colour correction')
-plt.savefig(outdir+'mfi_corrections_fit.pdf')
+plt.savefig(outdir+'mfi_corrections_fit.png')
 plt.clf()
 plt.close()
 
+# Compare with Roke's values
 roke_11 = [0.9589, 0.01601, 0.002185]
 roke_13 = [1.022, -0.01436, 0.001688]
 roke_17 = [1.029, -0.01618,  0.0008349]
@@ -299,4 +368,5 @@ plt.close()
 
 print(mfi219_corrections[alphas == -0.5] - mfi419_corrections[alphas == -0.5])
 print(mfi217_corrections[alphas == -0.5] - mfi417_corrections[alphas == -0.5])
+
 exit()
