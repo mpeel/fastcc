@@ -106,10 +106,13 @@ def combine_bandpasses(dataset1,dataset2,dataset3=[],dataset4=[]):
 
 def plot_bandpass_all(dataset,outname):
 	for i in range(0,len(dataset)):
-		plt.plot(dataset[i][0],dataset[i][1])#,'b')
+		freq = dataset[i][0]
+		band = dataset[i][1]
+		plt.plot(freq,band/(np.sum(band)*(freq[10]-freq[9])))#,'b')
 	# plt.yscale('log')
-	plt.xlabel('Frequency')
-	plt.ylabel('Amplitude')
+	plt.xlabel('Frequency (GHz)')
+	plt.ylabel('Amplitude (arbitrary)')
+	plt.tight_layout()
 	plt.savefig(outname)
 	plt.clf()
 	plt.close()
@@ -118,10 +121,10 @@ def plot_bandpass_all(dataset,outname):
 
 def plot_bandpass(dataset, outname):
 	plt.plot(dataset[0],dataset[1],'b')
-	plt.yscale('log')
-	plt.xscale('log')
-	plt.xlabel('Frequency')
-	plt.ylabel('Amplitude')
+	# plt.yscale('log')
+	# plt.xscale('log')
+	plt.xlabel('Frequency (GHz)')
+	plt.ylabel('Amplitude (arbitrary)')
 	plt.savefig(outname)
 	plt.clf()
 	plt.close()
@@ -271,3 +274,8 @@ def calc_Kcol(alpha_src,alpha_cal,g,nu0,nu):
     numer = np.trapz(g*np.power(nu/nu0,alpha_cal),nu)
     denom = np.trapz(g*np.power(nu/nu0,alpha_src),nu)
     return numer/denom
+
+def trim_bandpass(bp, centralfreq, bandwidth):
+	bp[1][bp[0]<(centralfreq-(bandwidth/2.0))] = 0.0
+	bp[1][bp[0]>(centralfreq+(bandwidth/2.0))] = 0.0
+	return bp

@@ -130,7 +130,7 @@ mfi419_pol = combine_bandpasses([pol4_pol[0], pol4_pol[1]], [pol4_pol[0], pol4_p
 plot_bandpass(mfi419_pol,outdir+'mfi_419_pol.png')
 
 
-plot_bandpass_all([mfi111, mfi113, mfi217, mfi219, mfi311, mfi313, mfi417, mfi419], outdir+'mfi_comb_band.pdf')
+plot_bandpass_all([mfi111, mfi113, mfi217, mfi219, mfi311, mfi313, mfi417, mfi419], outdir+'mfi_comb_band.png')
 
 
 # And the weighted combination
@@ -171,6 +171,27 @@ mfi19_corrections = np.ones(len(alphas))
 mfi17_pol_corrections = np.ones(len(alphas))
 mfi19_pol_corrections = np.ones(len(alphas))
 
+# Trim the bandpasses
+# mfi111 = trim_bandpass(mfi111, 11.2, 4.5)
+# mfi113 = trim_bandpass(mfi111, 12.8, 4.5)
+mfi217 = trim_bandpass(mfi217, 16.7, 4.5)
+mfi217_pol = trim_bandpass(mfi217_pol, 16.7, 4.5)
+mfi219 = trim_bandpass(mfi219, 18.7, 4.5)
+mfi219_pol = trim_bandpass(mfi219_pol, 18.7, 4.5)
+mfi311 = trim_bandpass(mfi311, 11.1, 4.5)
+mfi311pol = trim_bandpass(mfi311pol, 11.1, 4.5)
+mfi313 = trim_bandpass(mfi313, 12.9, 4.5)
+mfi313pol = trim_bandpass(mfi313pol, 12.9, 4.5)
+mfi417 = trim_bandpass(mfi417, 17.0, 4.5)
+mfi417_pol = trim_bandpass(mfi417_pol, 17.0, 4.5)
+mfi419 = trim_bandpass(mfi419, 19.0, 4.5)
+mfi419_pol = trim_bandpass(mfi419_pol, 19.0, 4.5)
+
+mfi17 = trim_bandpass(mfi17, 16.8, 4.5)
+mfi17_pol = trim_bandpass(mfi17_pol, 16.8, 4.5)
+mfi19 = trim_bandpass(mfi19, 18.8, 4.5)
+mfi19_pol = trim_bandpass(mfi19_pol, 18.8, 4.5)
+
 calindex = 2.0#-0.3
 usecorr = False
 for i in range(0,len(alphas)):
@@ -191,10 +212,10 @@ for i in range(0,len(alphas)):
 	mfi417_pol_corrections[i] = calc_correction(mfi417_pol, 17.0, alphas[i],calindex=calindex,usecorr=usecorr)
 	mfi419_pol_corrections[i] = calc_correction(mfi419_pol, 19.0, alphas[i],calindex=calindex,usecorr=usecorr)
 
-	mfi17_corrections[i] = calc_correction(mfi417, 16.8, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi19_corrections[i] = calc_correction(mfi419, 18.8, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi17_pol_corrections[i] = calc_correction(mfi417_pol, 16.8, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi19_pol_corrections[i] = calc_correction(mfi419_pol, 18.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi17_corrections[i] = calc_correction(mfi17, 16.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi19_corrections[i] = calc_correction(mfi19, 18.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi17_pol_corrections[i] = calc_correction(mfi17_pol, 16.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi19_pol_corrections[i] = calc_correction(mfi19_pol, 18.8, alphas[i],calindex=calindex,usecorr=usecorr)
 
 print(alphas)
 print('From bandpasses:')
@@ -240,7 +261,26 @@ l = plt.legend(prop={'size':11})
 l.set_zorder(20)
 plt.xlabel('Spectral index')
 plt.ylabel('Colour correction')
-plt.savefig(outdir+'mfi_corrections.pdf')
+plt.tight_layout()
+plt.savefig(outdir+'mfi_corrections.png')
+plt.clf()
+plt.close()
+
+
+plt.plot(alphas,mfi311_corrections,'r-',label='11')
+plt.plot(alphas,mfi313_corrections,'g-',label='13')
+plt.plot(alphas,mfi17_corrections,'b-',label='17')
+plt.plot(alphas,mfi19_corrections,'m-',label='19')
+plt.plot(alphas,mfi311pol_corrections,'r-.',label='11p')
+plt.plot(alphas,mfi313pol_corrections,'g-.',label='13p')
+plt.plot(alphas,mfi17_pol_corrections,'b-.',label='17p')
+plt.plot(alphas,mfi19_pol_corrections,'m-.',label='19p')
+l = plt.legend(prop={'size':11})
+l.set_zorder(20)
+plt.xlabel('Spectral index')
+plt.ylabel('Colour correction')
+plt.tight_layout()
+plt.savefig(outdir+'mfi_band_corrections.png')
 plt.clf()
 plt.close()
 
@@ -256,7 +296,8 @@ l = plt.legend(prop={'size':11})
 l.set_zorder(20)
 plt.xlabel('Spectral index')
 plt.ylabel('Colour correction')
-plt.savefig(outdir+'mfi_corrections_pol.pdf')
+plt.tight_layout()
+plt.savefig(outdir+'mfi_corrections_pol.png')
 plt.clf()
 plt.close()
 

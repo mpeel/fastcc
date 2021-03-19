@@ -16,7 +16,7 @@ from astrocode.fitspectrum.astroutils import *
 from fastcc import *
 from cc_calc_functions import *
 
-outdir = 'plots_2020_10_06/'
+outdir = 'plots_2021_01_15/'
 print(outdir)
 ensure_dir(outdir)
 
@@ -36,6 +36,9 @@ cbassI = combine_bandpasses([cbass_bp[0],cbass_bp[1]], [cbass_bp[0],cbass_bp[6]]
 cbassQ = combine_bandpasses([cbass_bp[0],cbass_bp[2]], [cbass_bp[0],cbass_bp[4]])
 cbassU = combine_bandpasses([cbass_bp[0],cbass_bp[3]], [cbass_bp[0],cbass_bp[5]])
 cbassP = combine_bandpasses(cbassQ, cbassU)
+
+plot_bandpass_all([[cbass_bp[0],cbass_bp[1]],[cbass_bp[0],cbass_bp[2]],[cbass_bp[0],cbass_bp[3]],[cbass_bp[0],cbass_bp[4]],[cbass_bp[0],cbass_bp[5]],[cbass_bp[0],cbass_bp[6]]],outdir+'cbass_all.png')
+
 
 cbassI1_corrections = np.ones(len(alphas))
 cbassU1_corrections = np.ones(len(alphas))
@@ -95,7 +98,8 @@ plt.plot(alphas,cbassU_corrections,label='U')
 plt.plot(alphas,cbassP_corrections,label='P')
 l = plt.legend(prop={'size':11})
 l.set_zorder(20)
-plt.savefig(outdir+'cbass_corrections.pdf')
+plt.tight_layout()
+plt.savefig(outdir+'cbass_corrections.png')
 plt.clf()
 plt.close()
 
