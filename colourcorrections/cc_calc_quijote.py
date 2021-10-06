@@ -18,7 +18,8 @@ outdir = 'plots_2021_01_15/'
 print(outdir)
 ensure_dir(outdir)
 
-alphas = [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
+# alphas = [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
+alphas = [-0.31, 2.0]
 alphas = np.asarray(alphas)
 
 # QUIJOTE MFI
@@ -192,30 +193,34 @@ mfi17_pol = trim_bandpass(mfi17_pol, 16.8, 4.5)
 mfi19 = trim_bandpass(mfi19, 18.8, 4.5)
 mfi19_pol = trim_bandpass(mfi19_pol, 18.8, 4.5)
 
+reference_freqs = [11.2, 12.8, 16.7, 18.7, 11.1, 12.9, 17.0, 19.0, 16.8, 18.8]
+reference_freqs = [11.2, 12.8, 16.807675, 18.831303, 10.987673, 12.901321, 16.938613, 18.901596, 16.8, 18.8]
+
 calindex = 2.0#-0.3
+# calindex = -0.31
 usecorr = False
 for i in range(0,len(alphas)):
-	mfi111_corrections[i] = calc_correction(mfi111, 11.2, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi113_corrections[i] = calc_correction(mfi113, 12.8, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi217_corrections[i] = calc_correction(mfi217, 16.7, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi219_corrections[i] = calc_correction(mfi219, 18.7, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi217_pol_corrections[i] = calc_correction(mfi217_pol, 16.7, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi219_pol_corrections[i] = calc_correction(mfi219_pol, 18.7, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi311_corrections[i] = calc_correction(mfi311, 11.1, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi313_corrections[i] = calc_correction(mfi313, 12.9, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi311pol_corrections[i] = calc_correction(mfi311pol, 11.1, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi313pol_corrections[i] = calc_correction(mfi313pol, 12.9, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi111_corrections[i] = calc_correction(mfi111, reference_freqs[0], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi113_corrections[i] = calc_correction(mfi113, reference_freqs[1], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi217_corrections[i] = calc_correction(mfi217, reference_freqs[2], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi219_corrections[i] = calc_correction(mfi219, reference_freqs[3], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi217_pol_corrections[i] = calc_correction(mfi217_pol, reference_freqs[2], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi219_pol_corrections[i] = calc_correction(mfi219_pol, reference_freqs[3], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi311_corrections[i] = calc_correction(mfi311, reference_freqs[4], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi313_corrections[i] = calc_correction(mfi313, reference_freqs[5], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi311pol_corrections[i] = calc_correction(mfi311pol, reference_freqs[4], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi313pol_corrections[i] = calc_correction(mfi313pol, reference_freqs[5], alphas[i],calindex=calindex,usecorr=usecorr)
 	# mfi311orig_corrections[i] = calc_correction(mfi311orig, 11.1, alphas[i],calindex=calindex,usecorr=usecorr)
 	# mfi313orig_corrections[i] = calc_correction(mfi313orig, 12.9, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi417_corrections[i] = calc_correction(mfi417, 17.0, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi419_corrections[i] = calc_correction(mfi419, 19.0, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi417_pol_corrections[i] = calc_correction(mfi417_pol, 17.0, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi419_pol_corrections[i] = calc_correction(mfi419_pol, 19.0, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi417_corrections[i] = calc_correction(mfi417, reference_freqs[6], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi419_corrections[i] = calc_correction(mfi419, reference_freqs[7], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi417_pol_corrections[i] = calc_correction(mfi417_pol, reference_freqs[6], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi419_pol_corrections[i] = calc_correction(mfi419_pol, reference_freqs[7], alphas[i],calindex=calindex,usecorr=usecorr)
 
-	mfi17_corrections[i] = calc_correction(mfi17, 16.8, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi19_corrections[i] = calc_correction(mfi19, 18.8, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi17_pol_corrections[i] = calc_correction(mfi17_pol, 16.8, alphas[i],calindex=calindex,usecorr=usecorr)
-	mfi19_pol_corrections[i] = calc_correction(mfi19_pol, 18.8, alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi17_corrections[i] = calc_correction(mfi17, reference_freqs[8], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi19_corrections[i] = calc_correction(mfi19, reference_freqs[9], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi17_pol_corrections[i] = calc_correction(mfi17_pol, reference_freqs[8], alphas[i],calindex=calindex,usecorr=usecorr)
+	mfi19_pol_corrections[i] = calc_correction(mfi19_pol, reference_freqs[9], alphas[i],calindex=calindex,usecorr=usecorr)
 
 print(alphas)
 print('From bandpasses:')
@@ -239,6 +244,7 @@ print(mfi17_corrections)
 print(mfi19_corrections)
 print(mfi17_pol_corrections)
 print(mfi19_pol_corrections)
+exit()
 # print('From fastcc:')
 # print(fastcc('Q111',alpha=alphas))
 # print(fastcc('Q113',alpha=alphas))
