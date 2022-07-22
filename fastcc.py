@@ -365,7 +365,7 @@ def fastcc(freq, alpha=False, td=False, bd=False, detector=False, debug=False, o
 			elif (option == 2):
 				cc = mbb_v2.get(freq, 0)
 			else:
-				cc = mbbb_v1.get(freq, 0)
+				cc = mbb_v1.get(freq, 0)
 		else:
 			if (option == 3):
 				cc = frequencies_v3.get(freq, 0)
