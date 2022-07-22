@@ -36,6 +36,7 @@
 # Mike Peel   26-Feb-2021   v3.2 Updating QUIJOTE, HFI, DIRBE, IRAS, adding HFI modified black body
 # Mike Peel   01-Mar-2021   v3.3 Updating QUIJOTE 17 and 19GHz
 # Mike Peel   03-Mar-2021   v3.4 Correction for QUIJOTE
+# Mike Peel   22-Jul-2022   v3.4.1 Typo fix for MBB for v1, with thanks to @jyothischandran1597
 
 def fastcc(freq, alpha=False, td=False, bd=False, detector=False, debug=False, option=3, returnfreq=False):
 	# Define dictionaries containing the coefficients for different detectors and frequencies
