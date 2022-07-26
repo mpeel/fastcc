@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
-from astrocode.fitspectrum.astroutils import *
-from astrocode.fitspectrum.spectra import planckcorr, get_spectrum_constants
+from astrocode.astroutils import *
+from astrocode.spectra import planckcorr, get_spectrum_constants
 from fastcc import *
 from cc_calc import *
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8  -*-
 #
 # Calculate colour corrections for various instruments
-# 
+#
 # Version history:
 #
 # 16-Jun-2019  M. Peel       Started
@@ -11,7 +11,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
-from astrocode.fitspectrum.astroutils import *
+from astrocode.astroutils import *
 from fastcc import *
 from cc_calc_functions import *
 

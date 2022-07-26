@@ -3,8 +3,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
-from astrocode.fitspectrum.astroutils import *
-from astrocode.fitspectrum.spectra import planckcorr, get_spectrum_constants
+from astrocode.astroutils import *
+from astrocode.spectra import planckcorr, get_spectrum_constants
 from fastcc import *
 
 microns = np.asarray([240, 140, 100, 60, 25, 12, 4.9, 3.5, 2.2, 1.25])

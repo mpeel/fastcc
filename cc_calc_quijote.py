@@ -10,7 +10,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
-from astrocode.fitspectrum.astroutils import *
+from astrocode.astroutils import *
 from fastcc import *
 from cc_calc_functions import *
 

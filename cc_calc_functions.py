@@ -2,7 +2,7 @@
 # -*- coding: utf-8  -*-
 #
 # Functions for cc_calc.py
-# 
+#
 # Version history:
 #
 # 16-Jun-2019  M. Peel       Started
@@ -12,7 +12,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
-from astrocode.fitspectrum.astroutils import *
+from astrocode.astroutils import *
 from fastcc import *
 
 def get_spectrum_constants():

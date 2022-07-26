@@ -2,7 +2,7 @@
 # -*- coding: utf-8  -*-
 #
 # Calculate colour corrections for various instruments
-# 
+#
 # Version history:
 #
 # 16-Jun-2019  M. Peel       Started
@@ -10,12 +10,18 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
 import astropy.io.fits as fits
-from astrocode.fitspectrum.astroutils import *
+from astrocode.astroutils import *
 from fastcc import *
 from cc_calc_functions import *
 
-outdir = 'plots_2020_10_06/'
+font = {'family' : 'normal',
+        'size'   : 12}
+
+matplotlib.rc('font', **font)
+
+outdir = 'plots_2022_07_26/'
 print(outdir)
 ensure_dir(outdir)
 
@@ -25,7 +31,7 @@ alphas = np.asarray(alphas)
 # Below is for Planck LFI
 
 # 2013 release. THE RIMO IS WRONG - it has an incorrect frequency shift of -0.1GHz in the bandpass.
-planck_lfi_filename = '/Users/mpeel/Documents/maps/planck2013/LFI_RIMO_R1.12.fits'
+planck_lfi_filename = 'inputdata/LFI_RIMO_R1.12.fits'
 bp_planck_30 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=2)
 plot_bandpass(bp_planck_30,outdir+'planck_112_30.png')
 bp_planck_44 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=3)
@@ -34,7 +40,7 @@ bp_planck_70 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=4)
 plot_bandpass(bp_planck_70,outdir+'planck_112_70.png')
 
 # 2015 release. Mistake in previous version fixed. Extra frequency shift from Commander needs to be applied.
-planck_lfi_filename = '/Users/mpeel/Documents/maps/planck2015/LFI_RIMO_R2.50.fits'
+planck_lfi_filename = 'inputdata/LFI_RIMO_R2.50.fits'
 bp_planck_30 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=25)
 plot_bandpass(bp_planck_30,outdir+'planck_250_30.png')
 bp_planck_44 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=26)
@@ -43,7 +49,7 @@ bp_planck_70 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=27)
 plot_bandpass(bp_planck_70,outdir+'planck_250_70.png')
 
 # 2018 release - actually the same as the 2015 release.
-planck_lfi_filename = '/Users/mpeel/Documents/maps/planck2018/LFI_RIMO_R3.31.fits'
+planck_lfi_filename = 'inputdata/LFI_RIMO_R3.31.fits'
 bp_planck_30_28S = read_lfi_rimo_bandpass(planck_lfi_filename,ext=3)
 plot_bandpass(bp_planck_30_28S,outdir+'planck_30_28S.png')
 bp_planck_30_28M = read_lfi_rimo_bandpass(planck_lfi_filename,ext=4)
@@ -113,6 +119,17 @@ bp_planck_44 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=26)
 plot_bandpass(bp_planck_44,outdir+'planck_44.png')
 bp_planck_70 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=27)
 plot_bandpass(bp_planck_70,outdir+'planck_70.png')
+
+plt.plot(bp_planck_30[0],bp_planck_30[1],label='28.4 GHz')
+plt.plot(bp_planck_44[0],bp_planck_44[1],label='44.1 GHz')
+plt.plot(bp_planck_70[0],bp_planck_70[1],label='70.4 GHz')
+l = plt.legend(prop={'size':11})
+l.set_zorder(20)
+plt.xlabel('Frequency (GHz)')
+plt.ylabel('Amplitude (arbitrary)')
+plt.savefig(outdir+'planck_lfi_bandpass.pdf')
+plt.clf()
+plt.close()
 
 bp_planck_70_ds1 = combine_bandpasses(bp_planck_70_18, bp_planck_70_23)
 bp_planck_70_ds2 = combine_bandpasses(bp_planck_70_19, bp_planck_70_22)

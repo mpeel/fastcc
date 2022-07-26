@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
-from astrocode.fitspectrum.astroutils import *
+from astrocode.astroutils import *
 from fastcc import *
 from cc_calc_functions import *
 
@@ -235,7 +235,3 @@ for i in range(0,10):
 # # print(cc[1].data['BANDS'])
 # print(cc[1].data['PF'])
 # cc.close()
-
-
-
-
