@@ -143,8 +143,12 @@ def calc_correction(dataset,nu0,alpha,calindex=2.0,usecorr=True):
 	else:
 		# topsum = np.sum(dataset[1]) * dnu
 		# bottomcalc = np.sum(np.asarray(dataset[1]) * (np.asarray(dataset[0]) / nu0)**(alpha-calindex)) * dnu
-		topsum = np.trapz(dataset[1], np.asarray(dataset[0]))
-		bottomcalc = np.trapz(np.asarray(dataset[1]) * (np.asarray(dataset[0]) / nu0)**(alpha-calindex), np.asarray(dataset[0]))
+		# topsum = np.trapz(dataset[1], np.asarray(dataset[0]))
+		# bottomcalc = np.trapz(np.asarray(dataset[1]) * (np.asarray(dataset[0]) / nu0)**(alpha-calindex), np.asarray(dataset[0]))
+		# topsum = np.trapz(dataset[1] * (np.asarray(dataset[0]) / nu0)**(calindex-2.0), np.asarray(dataset[0]))
+		# bottomcalc = np.trapz(np.asarray(dataset[1]) * (np.asarray(dataset[0]) / nu0)**(alpha-2.0), np.asarray(dataset[0]))
+		topsum = np.trapz(dataset[1] * (np.asarray(dataset[0]) / nu0)**(calindex), np.asarray(dataset[0]))
+		bottomcalc = np.trapz(np.asarray(dataset[1]) * (np.asarray(dataset[0]) / nu0)**(alpha), np.asarray(dataset[0]))
 		return topsum / bottomcalc
 
 

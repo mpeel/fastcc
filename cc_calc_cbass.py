@@ -16,7 +16,7 @@ from astrocode.astroutils import *
 from fastcc import *
 from cc_calc_functions import *
 
-outdir = 'plots_2021_01_15/'
+outdir = 'plots_2022_11_08a/'
 print(outdir)
 ensure_dir(outdir)
 
@@ -24,7 +24,7 @@ alphas = [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0,
 alphas = np.asarray(alphas)
 
 # CBASS
-cbass_bp = read_cbass_bandpass('/Users/mpeel/Documents/maps/cbass2019/20130625_v02_Passband.csv')
+cbass_bp = read_cbass_bandpass('/Volumes/LaCie4TB/maps/cbass2019/20130625_v02_Passband.csv')
 print(cbass_bp[0])
 plot_bandpass([cbass_bp[0],cbass_bp[1]],outdir+'cbass_I1.png')
 plot_bandpass([cbass_bp[0],cbass_bp[2]],outdir+'cbass_Q1.png')

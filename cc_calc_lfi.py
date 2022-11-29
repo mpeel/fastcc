@@ -21,7 +21,7 @@ font = {'family' : 'normal',
 
 matplotlib.rc('font', **font)
 
-outdir = 'plots_2022_07_26/'
+outdir = 'plots_2022_11_17/'
 print(outdir)
 ensure_dir(outdir)
 
@@ -120,9 +120,12 @@ plot_bandpass(bp_planck_44,outdir+'planck_44.png')
 bp_planck_70 = read_lfi_rimo_bandpass(planck_lfi_filename,ext=27)
 plot_bandpass(bp_planck_70,outdir+'planck_70.png')
 
-plt.plot(bp_planck_30[0],bp_planck_30[1],label='28.4 GHz')
-plt.plot(bp_planck_44[0],bp_planck_44[1],label='44.1 GHz')
-plt.plot(bp_planck_70[0],bp_planck_70[1],label='70.4 GHz')
+plt.axvline(x = 28.4, color = 'blue', linestyle='--')
+plt.axvline(x = 44.1, color = 'orange', linestyle='--')
+plt.axvline(x = 70.4, color = 'green', linestyle='--')
+plt.plot(bp_planck_30[0],bp_planck_30[1],color='blue',label='28.4 GHz')
+plt.plot(bp_planck_44[0],bp_planck_44[1],color='orange',label='44.1 GHz')
+plt.plot(bp_planck_70[0],bp_planck_70[1],color='green',label='70.4 GHz')
 l = plt.legend(prop={'size':11})
 l.set_zorder(20)
 plt.xlabel('Frequency (GHz)')
@@ -143,13 +146,43 @@ bp_planck_70_ds2[0][:] = bp_planck_70_ds2[0][:] + bp_shift[3]
 bp_planck_70_ds3[0][:] = bp_planck_70_ds3[0][:] + bp_shift[4]
 
 for i in range(0,len(alphas)):
-	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_70_ds1, 70.4, alphas[i])) + " - " + str(fastcc('70',alphas[i])) + " - " + str(fastcc('70',alphas[i],detector='1823',latest=True)))
+	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_70_ds1, 70.4, alphas[i])) + " - " + str(fastcc('70',alphas[i])) + " - " + str(fastcc('70',alphas[i],detector='1823')))
 
 for i in range(0,len(alphas)):
-	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_70, 70.4, alphas[i])) + " - " + str(fastcc('70',alphas[i])) + " - " + str(fastcc('70',alphas[i],latest=True)))
+	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_70, 70.4, alphas[i])) + " - " + str(fastcc('70',alphas[i])) + " - " + str(fastcc('P70',alphas[i])))
 
 for i in range(0,len(alphas)):
-	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_44, 44.1, alphas[i])) + " - " + str(fastcc('44',alphas[i])) + " - " + str(fastcc('44',alphas[i],latest=True)))
+	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_44, 44.1, alphas[i])) + " - " + str(fastcc('44',alphas[i])) + " - " + str(fastcc('P44',alphas[i])))
 
 for i in range(0,len(alphas)):
-	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_30, 28.4, alphas[i])) + " - " + str(fastcc('30',alphas[i])) + " - " + str(fastcc('30',alphas[i],latest=True)))
+	print(str(alphas[i]) + " - " + str(calc_correction(bp_planck_30, 28.4, alphas[i])) + " - " + str(fastcc('30',alphas[i])) + " - " + str(fastcc('P30',alphas[i])))
+
+P30 = [1.00513, 0.00301399, -0.00300699, 28.4]
+P44 = [0.994769, 0.00596703, -0.00173626, 44.1]
+P70 = [0.989711, 0.0106943, -0.00328671, 70.4]
+
+corr_30 = []
+corr_44 = []
+corr_70 = []
+for i in range(0,len(alphas)):
+	corr_30.append(calc_correction(bp_planck_30, 28.4, alphas[i]))
+	corr_44.append(calc_correction(bp_planck_44, 44.1, alphas[i]))
+	corr_70.append(calc_correction(bp_planck_70, 70.4, alphas[i]))
+
+print(len(alphas))
+print(len(corr_30))
+
+alphas_new = np.arange(-3.0,4.0,0.1)
+plt.plot(alphas_new,P30[0]+P30[1]*alphas_new+P30[2]*alphas_new*alphas_new,color='blue',label='28.4 GHz')
+plt.plot(alphas_new,P44[0]+P44[1]*alphas_new+P44[2]*alphas_new*alphas_new,color='orange',label='44.1 GHz')
+plt.plot(alphas_new,P70[0]+P70[1]*alphas_new+P70[2]*alphas_new*alphas_new,color='green',label='70.4 GHz')
+plt.plot(alphas,np.asarray(corr_30),color='blue',marker='o')
+plt.plot(alphas,np.asarray(corr_44),color='orange',marker='o')
+plt.plot(alphas,np.asarray(corr_70),color='green',marker='o')
+l = plt.legend(prop={'size':12})
+l.set_zorder(20)
+plt.xlabel('Spectral index',)
+plt.ylabel('Colour correction')
+plt.savefig(outdir+'planck_lfi_cc.pdf')
+plt.clf()
+plt.close()
